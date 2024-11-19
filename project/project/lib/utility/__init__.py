@@ -34,6 +34,9 @@ import lib.utility.constants
 #   2.2.    ANSI.
 import lib.utility.ansi
 
+#   2.3.    CSTRING.
+import lib.utility.cstring
+
 
 
 

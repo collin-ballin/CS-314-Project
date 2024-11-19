@@ -12,7 +12,7 @@ from enum import Enum, auto
 
 
 
-#   1.  CLASSES AND TYPES TO DEFINE TAGS FOR WIDGETS ...
+#   1.  CLASSES AND TYPES TO DEFINE TAGS FOR LOGGING ...
 ###############################################################################
 ###############################################################################
 

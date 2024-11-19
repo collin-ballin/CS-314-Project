@@ -56,6 +56,16 @@
          <Group
             location = "group:utility"
             name = "utility">
+            <Group
+               location = "group:cstring"
+               name = "cstring">
+               <FileRef
+                  location = "group:__init__.py">
+               </FileRef>
+               <FileRef
+                  location = "group:_cstring.py">
+               </FileRef>
+            </Group>
             <FileRef
                location = "group:_utility.py">
             </FileRef>
