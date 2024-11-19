@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "container:../project/project"
+      name = "project">
+      <FileRef
+         location = "group:main.py">
+      </FileRef>
+      <Group
+         location = "group:lib"
+         name = "lib">
+         <FileRef
+            location = "group:__init__.py">
+         </FileRef>
+         <Group
+            location = "group:app"
+            name = "app">
+            <FileRef
+               location = "group:__init__.py">
+            </FileRef>
+            <Group
+               location = "group:__pycache__"
+               name = "__pycache__">
+               <FileRef
+                  location = "group:__init__.cpython-312.pyc">
+               </FileRef>
+               <FileRef
+                  location = "group:_app.cpython-312.pyc">
+               </FileRef>
+            </Group>
+            <FileRef
+               location = "group:_app.py">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:user"
+            name = "user">
+            <FileRef
+               location = "group:__init__.py">
+            </FileRef>
+            <FileRef
+               location = "group:_user.py">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:services"
+            name = "services">
+            <FileRef
+               location = "group:_services.py">
+            </FileRef>
+            <FileRef
+               location = "group:__init__.py">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:utility"
+            name = "utility">
+            <FileRef
+               location = "group:_utility.py">
+            </FileRef>
+            <FileRef
+               location = "group:__init__.py">
+            </FileRef>
+            <Group
+               location = "group:constants"
+               name = "constants">
+               <FileRef
+                  location = "group:_constants.py">
+               </FileRef>
+               <FileRef
+                  location = "group:__init__.py">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:ansi"
+               name = "ansi">
+               <FileRef
+                  location = "group:_ansi.py">
+               </FileRef>
+               <FileRef
+                  location = "group:__init__.py">
+               </FileRef>
+            </Group>
+         </Group>
+         <Group
+            location = "group:testing"
+            name = "testing">
+            <FileRef
+               location = "group:__init__.py">
+            </FileRef>
+            <FileRef
+               location = "group:_testing.py">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:__pycache__"
+            name = "__pycache__">
+            <FileRef
+               location = "group:__init__.cpython-312.pyc">
+            </FileRef>
+         </Group>
+      </Group>
+   </Group>
+</Workspace>
