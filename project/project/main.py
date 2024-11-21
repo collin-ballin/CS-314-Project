@@ -41,10 +41,10 @@ def main() -> int:
     #   2.  EXCEPTION-CATCHING BLOCKS ...
     except KeyboardInterrupt as e:
         UTL.log(f"Caught CTRL-C Keyboard Interuption.  Exiting...")
-        #UTL.log(f"{e}",color=False)
+        UTL.log(f"{e}",color=False)
         
     except Exception as e:
-        UTL.log("FALLBACK EXCEPTION CASE.  An specified exception has been thrown.",type="ERR")
+        UTL.log("FALLBACK EXCEPTION CASE.  An specified exception has been thrown.",type=ANSI.ERROR)
         UTL.log(f"{e}",color=False)
         
         traceback.print_exc()

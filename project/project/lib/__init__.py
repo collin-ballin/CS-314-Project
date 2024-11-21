@@ -68,10 +68,10 @@ import lib.utility
 #
 #
 #
-#   5.      Imports from "TESTING" Module...
+#   5.      Imports from "TESTS" Module...
 ###############################################################################
 ###############################################################################
-import lib.testing
+import lib.tests
 #
 #       ...
 #

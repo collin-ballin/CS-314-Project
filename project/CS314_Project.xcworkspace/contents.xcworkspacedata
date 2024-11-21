@@ -19,6 +19,9 @@
             <FileRef
                location = "group:__init__.py">
             </FileRef>
+            <FileRef
+               location = "group:_app.py">
+            </FileRef>
             <Group
                location = "group:__pycache__"
                name = "__pycache__">
@@ -29,9 +32,6 @@
                   location = "group:_app.cpython-312.pyc">
                </FileRef>
             </Group>
-            <FileRef
-               location = "group:_app.py">
-            </FileRef>
          </Group>
          <Group
             location = "group:user"
@@ -56,16 +56,6 @@
          <Group
             location = "group:utility"
             name = "utility">
-            <Group
-               location = "group:cstring"
-               name = "cstring">
-               <FileRef
-                  location = "group:__init__.py">
-               </FileRef>
-               <FileRef
-                  location = "group:_cstring.py">
-               </FileRef>
-            </Group>
             <FileRef
                location = "group:_utility.py">
             </FileRef>
@@ -92,15 +82,38 @@
                   location = "group:__init__.py">
                </FileRef>
             </Group>
+            <Group
+               location = "group:cstring"
+               name = "cstring">
+               <FileRef
+                  location = "group:__init__.py">
+               </FileRef>
+               <FileRef
+                  location = "group:_cstring.py">
+               </FileRef>
+            </Group>
          </Group>
          <Group
-            location = "group:testing"
-            name = "testing">
+            location = "group:tests"
+            name = "tests">
             <FileRef
                location = "group:__init__.py">
             </FileRef>
+            <Group
+               location = "group:__pycache__"
+               name = "__pycache__">
+               <FileRef
+                  location = "group:test_cstring.cpython-312.pyc">
+               </FileRef>
+               <FileRef
+                  location = "group:__init__.cpython-312.pyc">
+               </FileRef>
+            </Group>
             <FileRef
                location = "group:_testing.py">
+            </FileRef>
+            <FileRef
+               location = "group:test_cstring.py">
             </FileRef>
          </Group>
          <Group

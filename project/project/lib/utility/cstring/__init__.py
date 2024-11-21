@@ -12,11 +12,34 @@
 #   CONSTANTS Module.
 #
 ###############################################################################
+from dataclasses import dataclass, field
+import re
 
 
-
+# 	CLASS:  "CSTRING"
+#
+@dataclass
+class Cstring:
+	'''Class to implement a fixed-size string following the C-style function of a compile-time array.'''
 ###############################################################################
-#   END OF "...".
+
+    #   Imported Class Methods (Imported from "_name.py" files)...
+	from ._cstring import __post_init__
+	from ._cstring import __str__
+	from ._cstring import __repr__
+    
+    #   Imported Properties...
+	from ._cstring import data
+	from ._cstring import size
+ 
+    #   Class Data Members...
+	_data:          str             = field(init=True, repr=True)
+	_size:          int             = field(init=True, repr=True)
+ 
+ 
+ 
+###############################################################################
+#   END OF "CSTRING".
 #
 #
 #
@@ -25,3 +48,7 @@
 ###############################################################################
 ###############################################################################
 #   END "__INIT__" FOR "UTILITY" :: "CONSTANTS".
+
+
+    #size:           int     = field(init=True,  repr=True)
+#_value:str=field(init=True, repr=True)

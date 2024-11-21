@@ -15,39 +15,44 @@
 
 
 
-#   LOG TAG-DISPATCH VALUES.
+#   1.  ANSI COLOR CODES.
 ###############################################################################
-#   Log Tags Types.
-from ._ansi import Log_Tag
-
-#   Log Type Tags.
-from ._ansi import LOG,             WARN,           ERROR,          EVENT
-
-
-#   ANSI COLOR CODES.
-###############################################################################
-#   Import 2.1.
+#   Import 1.1.
 from ._ansi import BLACK,           RED,            GREEN,          YELLOW,  \
                    BLUE,            MAGENTA,        CYAN,           WHITE
 
-#   Import 2.2.
+#   Import 1.2.
 from ._ansi import BLACK_BOLD,      RED_BOLD,       GREEN_BOLD,     YELLOW_BOLD,  \
                    BLUE_BOLD,       MAGENTA_BOLD,   CYAN_BOLD,      WHITE_BOLD
                    
-#   Import 2.3.
+#   Import 1.3.
 from ._ansi import BLACK_BRIGHT,    RED_BRIGHT,     GREEN_BRIGHT,   YELLOW_BRIGHT,  \
                    BLUE_BRIGHT,     MAGENTA_BRIGHT, CYAN_BRIGHT,    WHITE_BRIGHT
 
-#   Import 2.4.
+#   Import 1.4.
 from ._ansi import BLACK_BB,        RED_BB,         GREEN_BB,       YELLOW_BB,       \
                    BLUE_BB,         MAGENTA_BB,     CYAN_BB,        WHITE_BB
 
-#   Import 2.5.
+#   Import 1.5.
 from ._ansi import RESET,           BOLD,           DIM,            ITALIC,          \
                    UNDERLINE,       BLINK,          INVERSE,        HIDDEN,          \
                    STRIKETHROUGH
                    
+    
+#   2.  LOG TAG-DISPATCH VALUES.
+###############################################################################
+#   2.1.    Log Tags Types.
+from ._ansi import Log_Tag
+
+#   2.2.    Log Type Tags.
+from ._ansi import LOG,             WARN,           ERROR,          EVENT,  \
+                   NOTE
                    
+#   2.3.    Log-Styles.
+from ._ansi import LOG_LINEWIDTH,   LOG_STYLES
+    
+    
+    
 ###############################################################################
 ###############################################################################
 #   END "__INIT__" FOR "UTILITY" :: "ANSI".
