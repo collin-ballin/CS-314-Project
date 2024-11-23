@@ -16,14 +16,22 @@ from dataclasses import dataclass, field
 import re
 
 
+
+from ._cstring import Cstring
+
+
+
 # 	CLASS:  "CSTRING"
 #
 @dataclass
-class Cstring:
+class CstringOld:
 	'''Class to implement a fixed-size string following the C-style function of a compile-time array.'''
 ###############################################################################
 
-    #   Imported Class Methods (Imported from "_name.py" files)...
+    #   Imported Member Functions (Imported from "_name.py" files)...
+	from ._cstring import _enforce_size
+
+    #   Built-in Class Methods...
 	from ._cstring import __post_init__
 	from ._cstring import __str__
 	from ._cstring import __repr__
@@ -33,8 +41,8 @@ class Cstring:
 	from ._cstring import size
  
     #   Class Data Members...
-	_data:          str             = field(init=True, repr=True)
-	_size:          int             = field(init=True, repr=True)
+	_size:          int             = field(default=30,     init=True,      repr=True)
+	_data:          str             = field(default="",     init=True,      repr=True)
  
  
  

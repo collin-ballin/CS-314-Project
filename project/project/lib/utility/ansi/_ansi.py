@@ -105,29 +105,34 @@ LOG_LINEWIDTH               = 70
 
 LOG_STYLES = {
     WARN: {
-        "label":            "WARN",
-        "color_code":       YELLOW_BOLD,
-        "tag_color":        YELLOW
+        "label"             : "WARN",
+        "color_code"        : YELLOW_BOLD,
+        "tag_color"         : YELLOW,
+        "count"             : 0
     },
     ERROR: {
-        "label":            "ERROR",
-        "color_code":       UNDERLINE + RED_BB,
-        "tag_color":        RED
+        "label"             : "ERROR",
+        "color_code"        : UNDERLINE + RED_BB,
+        "tag_color"         : RED,
+        "count"             : 0
     },
     EVENT: {
-        "label":            "EVENT",
-        "color_code":       BLUE_BOLD,
-        "tag_color":        BLUE
+        "label"             : "EVENT",
+        "color_code"        : BLUE_BOLD,
+        "tag_color"         : BLUE,
+        "count"             : 0
     },
     NOTE: {
-        "label":            "NOTE",
-        "color_code":       UNDERLINE + CYAN_BB,
-        "tag_color":        CYAN_BRIGHT
+        "label"             : "NOTE",
+        "color_code"        : UNDERLINE + CYAN_BB,
+        "tag_color"         : CYAN_BRIGHT,
+        "count"             : 0
     },
     LOG: {
-        "label":            "LOG",
-        "color_code":       GREEN_BOLD,
-        "tag_color":        GREEN
+        "label"             : "LOG",
+        "color_code"        : GREEN_BOLD,
+        "tag_color"         : GREEN,
+        "count"             : 0
     }
 }
 

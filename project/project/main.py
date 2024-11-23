@@ -17,7 +17,7 @@
 #       DATED:      Fall, 2024.
 #
 ###############################################################################
-import lib.utility.ansi as ANSI
+from lib.utility import ANSI
 import lib.utility as UTL
 import lib as app
 import os, sys, signal, traceback

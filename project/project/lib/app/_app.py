@@ -7,11 +7,10 @@
 #
 ###############################################################################
 from dataclasses import dataclass, field
-from lib.user import User
-from lib.utility.cstring import Cstring
-import lib.utility.ansi as ANSI
+from lib.utility import Cstring
+from lib.utility import ANSI
 import lib.utility as UTL
-
+from lib.users import Member
 
 
 #   MEMBER FUNCTION FOR "APP" CLASS (IMPORTED)...
@@ -36,35 +35,32 @@ def main(self):
     t2      = "Here is a whole lot of text and even some more text, lots of text"
     s1      = 15
     s2      = 15
-    S1      = Cstring(t1, s1)
-    S2      = Cstring(t2, s2)
+    S1      = Cstring(size=s1, data=t1)
+    #S2      = Cstring(t2, s2)
     
     
-    UTL.log(f"Constructing a Cstring[{s1}] with the text:\"{t1}\"[{len(t1)}]...",)
-    UTL.log(f"Displaying the Cstring:\t\t\t\t\t\t\t\"{S1}\"", ANSI.WARN)
-    
-    UTL.log(f"Constructing a Cstring[{s2}] with the text:\"{t2}\"[{len(t2)}]...",)
-    UTL.log(f"Displaying the Cstring:\t\t\t\t\t\t\t\"{S2}\"", ANSI.WARN)
+    #UTL.log(f"Constructing a Cstring[{s1}] with the text:\"{t1}\"[{len(t1)}]...",)
+    #UTL.log(f"Displaying the Cstring:\t\t\t\t\t\t\t\"{S1}\"", ANSI.WARN)
     
     
-    data = S2.data
-    UTL.log(f"Using \"getter\" to get the data...data=\"{data}\"",)
+    #member_1    = Member(name="Collin A. Bond")
+    member_2    = Member(name="Walter H. White", id="490662", address="308 Negra Arroyo Lane", state="NM", city="ABQ")
     
-    size = S2.size
-    UTL.log(f"Using \"getter\" to get the size...size=\"{size}\"",)
-    
-    
-    UTL.log(f"Attempting to change the data...", ANSI.WARN)
-    data = "changed"
-    
-    UTL.log(f"Displaying the data...data=\"{S2.data}\"", ANSI.WARN)
+    #UTL.log(f"Printing a Member:\n{member_1}",)
+    UTL.log(f"Printing another Member:\n{member_2}")
     
     
+    UTL.log("Second Stage...", ANSI.NOTE)
     
-    S2.data = "Test"
-    UTL.log(f"Modifying the data...S2=\"{S2}\"", ANSI.EVENT)
     
-    my_user = User(name="Name")
+    member_2.name = "Jesse Pinkman"
+    UTL.log(f"Changing the member's name...\n{member_2}", ANSI.WARN)
+    
+    
+    test = member_2.name
+    test = "Walter H. White"
+    UTL.log(f"Trying to change it back...\n{member_2}", ANSI.ERROR)
+    
     
     return
 

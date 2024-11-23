@@ -18,23 +18,15 @@ import textwrap, re
 #   "log"
 #
 def log(msg: str, type:ANSI.Log_Tag=ANSI.Log_Tag.LOG, color:bool=True, linewidth:int=ANSI.LOG_LINEWIDTH, log_types=ANSI.LOG_STYLES):
-    if not hasattr(log, "counters"):#   0.  Define function 'counter' attributes.
-        log.counters = {
-            ANSI.Log_Tag.WARN:      0,
-            ANSI.Log_Tag.ERROR:     0,
-            ANSI.Log_Tag.EVENT:     0,
-            ANSI.Log_Tag.NOTE:      0,
-            ANSI.Log_Tag.LOG:       0
-        }
-
     if type not in log_types:#          2.  Default value if unknown type is provided...
-        type = ANSI.Log_Tag.LOG
-
-    config              = log_types[type]
-    log_label           = f"{config['label']} [{log.counters[type]}]:{ANSI.RESET}\t"
-    indent              = " " * len(log_label) + "\t"  # Indent for subsequent lines
-    segments            = msg.split('\n')
-    wrapped_segments    = []
+        type = ANSI.LOG
+        
+    log_types[type]['count']   += 1
+    config                      = log_types[type]
+    log_label                   = f"{config['label']} [{log_types[type]['count']}]:{ANSI.RESET}\t"
+    indent                      = " " * len(log_label) + "\t"  # Indent for subsequent lines
+    segments                    = msg.split('\n')
+    wrapped_segments            = []
     for idx, segment in enumerate(segments):
         if (idx == 0):      #   First Segment.
             remaining   = linewidth - len(log_label)#   Fallback to a reasonable width.
