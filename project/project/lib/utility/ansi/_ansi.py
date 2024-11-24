@@ -101,7 +101,7 @@ NOTE                        = Log_Tag.NOTE
 
 #   2.2.    FORMAT STYLES FOR LOG TYPES ...
 ###############################################################################
-LOG_LINEWIDTH               = 70
+LOG_LINEWIDTH               = 87
 
 LOG_STYLES = {
     WARN: {

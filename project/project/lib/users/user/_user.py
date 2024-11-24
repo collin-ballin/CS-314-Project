@@ -30,27 +30,27 @@ class User(ABC):
 	################		    U S E R			    ################
 	################################################################
 
-    name                : str           = field(default="name",
+    name                : str           = field(default="NAME",
                                                 init=True,      compare=True,
                                                 hash=True,      repr=True)
 
-    id                  : str           = field(default="000000",
+    id                  : str           = field(default="ID NUMBER",
                                                 init=True,      compare=True,
                                                 hash=True,      repr=True)
 
-    address             : str           = field(default="address",
+    address             : str           = field(default="STREET ADDRESS",
                                                 init=True,      compare=True,
                                                 hash=True,      repr=True)
 
-    city                : str           = field(default="city",
+    city                : str           = field(default="CITY",
                                                 init=True,      compare=True,
                                                 hash=True,      repr=True)
 
-    state               : str           = field(default="state",
+    state               : str           = field(default="STATE",
                                                 init=True,      compare=True,
                                                 hash=True,      repr=True)
 
-    zip                 : str           = field(default="zipcode",
+    zip                 : str           = field(default="ZIPCODE",
                                                 init=True,      compare=True,
                                                 hash=True,      repr=True)
 

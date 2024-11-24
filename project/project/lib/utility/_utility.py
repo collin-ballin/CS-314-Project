@@ -11,7 +11,7 @@ import textwrap, re
 
 
 
-#   3.  MISC FUNCTIONS ...
+#   1.  MISC FUNCTIONS ...
 ################################################################################
 ################################################################################
 
@@ -54,6 +54,30 @@ def log(msg: str, type:ANSI.Log_Tag=ANSI.Log_Tag.LOG, color:bool=True, linewidth
     return
 
 
+#   "truncate"
+#
+def truncate(text, size:int) -> str:
+    return text if len(text) <= size else text[:size - 3] + "..."
+        
+        
+#   "hanging_indent"
+#
+def hanging_indent(input_text:str, level:int=1) -> str:
+    if (not input_text):
+        return input_text
+
+    indentation = '\n' + '\t' * level
+    return input_text.replace('\n', indentation)
+
+
+
+################################################################################
+#
+#
+#
+#   2.  APPLICATION UTILITY FUNCTIONS ...
+################################################################################
+################################################################################
 
 #   "signal_handler"
 #
@@ -76,9 +100,13 @@ def exit_gracefully():
     return
 
 
-
-
-
+################################################################################
+#
+#
+#
+#
+#
+#
 ###############################################################################
 ###############################################################################
 #   END "UTILITY".
