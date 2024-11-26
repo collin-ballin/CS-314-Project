@@ -7,8 +7,10 @@
 #
 ###############################################################################
 from dataclasses import dataclass, field
-from lib.user import User
-
+from lib.utility import Cstring
+from lib.utility import ANSI
+import lib.utility as UTL
+from lib.users import Member
 
 
 #   MEMBER FUNCTION FOR "APP" CLASS (IMPORTED)...
@@ -25,11 +27,19 @@ def __post_init__(self):
 #   "main"
 #
 def main(self):
+    UTL.log("Inside the \"App\" class...", ANSI.NOTE)
+   
     
-    print("Inside the \"App\" class...")
+    member_1    = Member(name="Collin A. Bond and a lot of text",   id="1234123412341234",
+                         address="308 Negra Arroyo Lane",           state="Oregon",
+                         city="Portland")
+                         
+    member_2    = Member(name="Walter H. White",                    id="490662",
+                         address="308 Negra Arroyo Lane",           city="Albuquerque",
+                         state="NM",                                zip="87104")
     
-    
-    my_user = User(name="Name")
+   
+    member_2.display()
     
     return
 

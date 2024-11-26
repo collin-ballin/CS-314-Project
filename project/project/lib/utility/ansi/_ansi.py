@@ -12,37 +12,7 @@ from enum import Enum, auto
 
 
 
-#   1.  CLASSES AND TYPES TO DEFINE TAGS FOR WIDGETS ...
-###############################################################################
-###############################################################################
-
-#   Define an enum for EACH TYPE OF WIDGET.
-class Log_Tag(Enum):
-    LOG         = auto()
-    WARN        = auto()
-    EVENT       = auto()
-    ERROR       = auto()
-    
-    
-#   1.1.    CONSTANT VALUES FOR WIDGET TAGS ...
-###############################################################################
-
-#   Log-Type Tags.
-LOG                         = Log_Tag.LOG
-WARN                        = Log_Tag.WARN
-EVENT                       = Log_Tag.EVENT
-ERROR                       = Log_Tag.ERROR
-
-
-###############################################################################
-###############################################################################
-#
-#
-#
-#
-#
-#
-#   2.  ANSI COLOR CODES.
+#   1.  ANSI COLOR CODES.
 ###############################################################################
 ###############################################################################
 
@@ -99,6 +69,78 @@ HIDDEN              = "\033[8m"
 STRIKETHROUGH       = "\033[9m"
 
 
+###############################################################################
+###############################################################################
+#
+#
+#
+#
+#
+#
+#   2.  CLASSES AND TYPES TO DEFINE TAGS FOR LOGGING ...
+###############################################################################
+###############################################################################
+#   Define an enum for EACH TYPE OF LOG.
+class Log_Tag(Enum):
+    LOG         = auto()
+    WARN        = auto()
+    EVENT       = auto()
+    ERROR       = auto()
+    NOTE        = auto()
+    
+    
+#   2.1.    CONSTANT VALUES FOR LOG TAGS ...
+###############################################################################
+#   Log-Type Tags.
+LOG                         = Log_Tag.LOG
+WARN                        = Log_Tag.WARN
+EVENT                       = Log_Tag.EVENT
+ERROR                       = Log_Tag.ERROR
+NOTE                        = Log_Tag.NOTE
+
+
+#   2.2.    FORMAT STYLES FOR LOG TYPES ...
+###############################################################################
+LOG_LINEWIDTH               = 87
+
+LOG_STYLES = {
+    WARN: {
+        "label"             : "WARN",
+        "color_code"        : YELLOW_BOLD,
+        "tag_color"         : YELLOW,
+        "count"             : 0
+    },
+    ERROR: {
+        "label"             : "ERROR",
+        "color_code"        : UNDERLINE + RED_BB,
+        "tag_color"         : RED,
+        "count"             : 0
+    },
+    EVENT: {
+        "label"             : "EVENT",
+        "color_code"        : BLUE_BOLD,
+        "tag_color"         : BLUE,
+        "count"             : 0
+    },
+    NOTE: {
+        "label"             : "NOTE",
+        "color_code"        : UNDERLINE + CYAN_BB,
+        "tag_color"         : CYAN_BRIGHT,
+        "count"             : 0
+    },
+    LOG: {
+        "label"             : "LOG",
+        "color_code"        : GREEN_BOLD,
+        "tag_color"         : GREEN,
+        "count"             : 0
+    }
+}
+
+
+#
+#
+#
+###############################################################################
 
 
 

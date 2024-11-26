@@ -19,6 +19,9 @@
             <FileRef
                location = "group:__init__.py">
             </FileRef>
+            <FileRef
+               location = "group:_app.py">
+            </FileRef>
             <Group
                location = "group:__pycache__"
                name = "__pycache__">
@@ -29,19 +32,6 @@
                   location = "group:_app.cpython-312.pyc">
                </FileRef>
             </Group>
-            <FileRef
-               location = "group:_app.py">
-            </FileRef>
-         </Group>
-         <Group
-            location = "group:user"
-            name = "user">
-            <FileRef
-               location = "group:__init__.py">
-            </FileRef>
-            <FileRef
-               location = "group:_user.py">
-            </FileRef>
          </Group>
          <Group
             location = "group:services"
@@ -82,23 +72,96 @@
                   location = "group:__init__.py">
                </FileRef>
             </Group>
+            <Group
+               location = "group:cstring"
+               name = "cstring">
+               <FileRef
+                  location = "group:__init__.py">
+               </FileRef>
+               <FileRef
+                  location = "group:_cstring.py">
+               </FileRef>
+            </Group>
          </Group>
          <Group
-            location = "group:testing"
-            name = "testing">
+            location = "group:tests"
+            name = "tests">
+            <Group
+               location = "group:test_cstring"
+               name = "test_cstring">
+               <FileRef
+                  location = "group:_test_cstring.py">
+               </FileRef>
+               <FileRef
+                  location = "group:__init__.py">
+               </FileRef>
+            </Group>
             <FileRef
                location = "group:__init__.py">
             </FileRef>
             <FileRef
                location = "group:_testing.py">
             </FileRef>
+            <Group
+               location = "group:__pycache__"
+               name = "__pycache__">
+               <FileRef
+                  location = "group:test_cstring.cpython-312.pyc">
+               </FileRef>
+               <FileRef
+                  location = "group:__init__.cpython-312.pyc">
+               </FileRef>
+            </Group>
          </Group>
          <Group
-            location = "group:__pycache__"
-            name = "__pycache__">
+            location = "group:users"
+            name = "users">
             <FileRef
-               location = "group:__init__.cpython-312.pyc">
+               location = "group:_users.py">
             </FileRef>
+            <FileRef
+               location = "group:__init__.py">
+            </FileRef>
+            <Group
+               location = "group:user"
+               name = "user">
+               <FileRef
+                  location = "group:_user.py">
+               </FileRef>
+               <FileRef
+                  location = "group:__init__.py">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:member"
+               name = "member">
+               <FileRef
+                  location = "group:__init__.py">
+               </FileRef>
+               <FileRef
+                  location = "group:_member.py">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:provider"
+               name = "provider">
+               <FileRef
+                  location = "group:_provider.py">
+               </FileRef>
+               <FileRef
+                  location = "group:__init__.py">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:__pycache__"
+               name = "__pycache__">
+               <FileRef
+                  location = "group:_user.cpython-312.pyc">
+               </FileRef>
+               <FileRef
+                  location = "group:__init__.cpython-312.pyc">
+               </FileRef>
+            </Group>
          </Group>
       </Group>
    </Group>

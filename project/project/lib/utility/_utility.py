@@ -11,70 +11,73 @@ import textwrap, re
 
 
 
-#   3.  MISC FUNCTIONS ...
+#   1.  MISC FUNCTIONS ...
 ################################################################################
 ################################################################################
 
 #   "log"
 #
-def log(msg:str, type:ANSI.Log_Tag=ANSI.LOG, color:bool=True):
-    log_label   = ""
-    indent      = ""
-    text        = ""
-    tag         = ""
-    
-    #   Initialize the counter attribute.
-    if not hasattr(log, "count_l"):
-        log.count_l = 0
-    if not hasattr(log, "count_w"):
-        log.count_w = 0
-    if not hasattr(log, "count_e"):
-        log.count_e = 0
-    if not hasattr(log, "count_err"):
-        log.count_err = 0
-    
-    
-    #   CASE 1 : WARN
-    if (type == ANSI.WARN):
-        log.count_w += 1
-        tag          = (color) * f"{ANSI.YELLOW}" + (not color) * f"{ANSI.WHITE}"
-        log_label    = f"WARN [{log.count_w}]:\t"
-        indent       = " " * len(log_label) + "\t"# Indent for subsequent lines
-        text         = textwrap.fill(msg, width=70, subsequent_indent=indent)
-        text         = f"{ANSI.YELLOW_BOLD}{log_label}{tag}{text}"
-    #
-    #   CASE 2 : ERROR
-    elif (type == ANSI.ERROR):
-        log.count_err  += 1
-        tag             = (color) * f"{ANSI.RED}" + (not color) * f"{ANSI.WHITE}"
-        log_label        = f"ERROR [{log.count_err}]:\t"
-        indent          = " " * len(log_label) + "\t"# Indent for subsequent lines
-        text            = textwrap.fill(msg, width=70, subsequent_indent=indent)
-        text            = f"{ANSI.RED_BOLD}{log_label}{tag}{text}"
-    #
-    #   CASE 3 : EVENT
-    elif (type == ANSI.EVENT):
-        log.count_e += 1
-        tag          = (color) * f"{ANSI.BLUE}" + (not color) * f"{ANSI.WHITE}"
-        log_label    = f"EVENT [{log.count_e}]:\t"
-        indent       = " " * len(log_label) + "\t"# Indent for subsequent lines
-        text         = textwrap.fill(msg, width=70, subsequent_indent=indent)
-        text         = f"{ANSI.BLUE_BOLD}{log_label}{tag}{text}"
-    #
-    #   CASE 4 : DEFAULT
+def log(msg: str, type:ANSI.Log_Tag=ANSI.Log_Tag.LOG, color:bool=True, linewidth:int=ANSI.LOG_LINEWIDTH, log_types=ANSI.LOG_STYLES):
+    if type not in log_types:#          2.  Default value if unknown type is provided...
+        type = ANSI.LOG
+        
+    log_types[type]['count']   += 1
+    config                      = log_types[type]
+    log_label                   = f"{config['label']} [{log_types[type]['count']}]:{ANSI.RESET}\t"
+    indent                      = " " * len(log_label) + "\t"  # Indent for subsequent lines
+    segments                    = msg.split('\n')
+    wrapped_segments            = []
+    for idx, segment in enumerate(segments):
+        if (idx == 0):      #   First Segment.
+            remaining   = linewidth - len(log_label)#   Fallback to a reasonable width.
+            if (remaining < 20): remaining = 50
+                
+            wrapped     = textwrap.fill(
+                segment, width=remaining, initial_indent='', subsequent_indent=indent
+            )
+        else:               #   Subsequent segments.  Use indent for both initial and subsequent indent.
+            wrapped = textwrap.fill(
+                segment, width=linewidth, initial_indent=indent, subsequent_indent=indent
+            )
+        wrapped_segments.append(wrapped)
+    wrapped_text = '\n'.join(wrapped_segments)
+
+    if (color):#    Apply color coding if enabled
+        label_colored = f"{config['color_code']}{log_label}"
+        body_colored = f"{config['tag_color']}{wrapped_text}{ANSI.RESET}"
     else:
-        log.count_l += 1
-        tag          = (color) * f"{ANSI.GREEN}" + (not color) * f"{ANSI.WHITE}"
-        log_label    = f"LOG [{log.count_l}]:\t"
-        indent       = " " * len(log_label) + "\t"# Indent for subsequent lines
-        text         = textwrap.fill(msg, width=70, subsequent_indent=indent)
-        text         = f"{ANSI.GREEN_BOLD}{log_label}{tag}{text}"
-       
-       
-    print(f"{text}{ANSI.RESET}")
+        label_colored = f"{log_label}"
+        body_colored = f"{wrapped_text}"
+
+    print(label_colored, end='')#       3.  Print the label and the message body.
+    print(body_colored)
     return
 
 
+#   "truncate"
+#
+def truncate(text, size:int) -> str:
+    return text if len(text) <= size else text[:size - 3] + "..."
+        
+        
+#   "hanging_indent"
+#
+def hanging_indent(input_text:str, level:int=1) -> str:
+    if (not input_text):
+        return input_text
+
+    indentation = '\n' + '\t' * level
+    return input_text.replace('\n', indentation)
+
+
+
+################################################################################
+#
+#
+#
+#   2.  APPLICATION UTILITY FUNCTIONS ...
+################################################################################
+################################################################################
 
 #   "signal_handler"
 #
@@ -97,9 +100,13 @@ def exit_gracefully():
     return
 
 
-
-
-
+################################################################################
+#
+#
+#
+#
+#
+#
 ###############################################################################
 ###############################################################################
 #   END "UTILITY".
