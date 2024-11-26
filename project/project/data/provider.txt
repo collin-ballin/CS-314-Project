@@ -1,0 +1,10 @@
+482930576,Rebecca Allen,2436 River Rd, Columbus, OH,43215,254,12345.67
+937561402,James Wilson,1327 Grand Ave, Phoenix, AZ,85003,845,9876.54
+584930617,Jessica Martin,8764 Hillcrest Dr, Denver, CO,80220,902,5432.10
+239875614,Michael Thomas,5556 Maple Blvd, Seattle, WA,98105,113,23456.78
+783264901,Elizabeth Garcia,4387 Birch St, San Diego, CA,92103,672,8765.43
+981726534,Christopher Lewis,1238 Pine Ln, Miami, FL,33156,529,6543.21
+652483190,Sarah Walker,7589 Oakwood Dr, Dallas, TX,75243,384,8765.98
+407862935,Daniel Harris,2690 Lakeview Blvd, Chicago, IL,60611,157,11234.56
+129876543,Laura Carter,9843 Cedar St, Orlando, FL,32839,836,34567.89
+365284910,David Scott,3701 Horizon Blvd, Portland, OR,97202,271,2345.67

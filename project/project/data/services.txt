@@ -1,0 +1,10 @@
+328672,Meal Planning,,,,,,85.00
+584910,Nutritional Counseling,,,,,,120.50
+472305,Personal Training Session,,,,,,65.75
+839614,Weight Loss Coaching,,,,,,200.00
+274930,Fitness Assessment,,,,,,50.25
+120384,Healthy Eating Workshop,,,,,,75.00
+329185,Behavioral Nutrition,,,,,,95.40
+514872,Meal Planning & Prep,,,,,,45.60
+982743,Personalized Diet Plan,,,,,,150.00
+238905,Strength Training,,,,,,90.90
