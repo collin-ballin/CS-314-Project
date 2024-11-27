@@ -90,8 +90,8 @@ if (__name__ == '__main__'):
         
     
     UTL.system_info()
-    UTL.manual()
-    #sys.exit( main() )
+    #UTL.manual()
+    sys.exit( main() )
 
 
 
