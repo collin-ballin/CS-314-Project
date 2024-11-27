@@ -210,7 +210,7 @@ def manual():
     
     {header('AUTHORS')}
             This project was written and developed by {underline('GROUP #6')} of the CS-314 Class...
-            - {auth('Hemu Babis', 'bellmic@pdx.edu')},          
+            - {auth('Hemu Babis', 'hemu@pdx.edu')},          
             - {auth('Elizabeth Barnett', 'eb32@pdx.edu')},         
             - {auth('Michael Bell', 'bellmic@pdx.edu')},  
             - {auth('Collin Bond', 'collin23@pdx.edu')},
