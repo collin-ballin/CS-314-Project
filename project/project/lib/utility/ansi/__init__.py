@@ -18,25 +18,35 @@
 #   1.  ANSI COLOR CODES.
 ###############################################################################
 #   Import 1.1.
-from ._ansi import BLACK,           RED,            GREEN,          YELLOW,  \
+from ._ansi import BLACK,           RED,            GREEN,          YELLOW,             \
                    BLUE,            MAGENTA,        CYAN,           WHITE
 
 #   Import 1.2.
-from ._ansi import BLACK_BOLD,      RED_BOLD,       GREEN_BOLD,     YELLOW_BOLD,  \
+from ._ansi import BLACK_BOLD,      RED_BOLD,       GREEN_BOLD,     YELLOW_BOLD,        \
                    BLUE_BOLD,       MAGENTA_BOLD,   CYAN_BOLD,      WHITE_BOLD
                    
 #   Import 1.3.
-from ._ansi import BLACK_BRIGHT,    RED_BRIGHT,     GREEN_BRIGHT,   YELLOW_BRIGHT,  \
+from ._ansi import BLACK_BRIGHT,    RED_BRIGHT,     GREEN_BRIGHT,   YELLOW_BRIGHT,      \
                    BLUE_BRIGHT,     MAGENTA_BRIGHT, CYAN_BRIGHT,    WHITE_BRIGHT
 
 #   Import 1.4.
-from ._ansi import BLACK_BB,        RED_BB,         GREEN_BB,       YELLOW_BB,       \
+from ._ansi import BLACK_BB,        RED_BB,         GREEN_BB,       YELLOW_BB,          \
                    BLUE_BB,         MAGENTA_BB,     CYAN_BB,        WHITE_BB
 
 #   Import 1.5.
-from ._ansi import RESET,           BOLD,           DIM,            ITALIC,          \
-                   UNDERLINE,       BLINK,          INVERSE,        HIDDEN,          \
-                   STRIKETHROUGH
+from ._ansi import RESET,           RESET_ALL,      BOLD,           DIM,                \
+                   ITALIC,          UNDERLINE,      BLINK,          INVERSE,            \
+                   HIDDEN,          STRIKETHROUGH
+
+#   Import 1.6.
+from ._ansi import CLEAR,           CLEAR_ABOVE,    CLEAR_BELOW,    CLEAR_LINE,         \
+                   CLEAR_RIGHT,     CLEAR_LEFT
+from ._ansi import CRETURN,         _BELL,          SAVE,           RECALL,             \
+                   HIDE,            SHOW,           SET,            UP,                 \
+                   DOWN,            RIGHT,          LEFT,           BELL
+from ._ansi import set,             save,           recall,         up,                 \
+                   down,            right,          left,           set_terminal_title, \
+                   hide,            show,           get_cursor_pos
                    
     
 #   2.  LOG TAG-DISPATCH VALUES.

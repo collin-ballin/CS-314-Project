@@ -7,6 +7,9 @@
       <FileRef
          location = "group:main.py">
       </FileRef>
+      <FileRef
+         location = "group:sketch.py">
+      </FileRef>
       <Group
          location = "group:lib"
          name = "lib">
@@ -165,4 +168,7 @@
          </Group>
       </Group>
    </Group>
+   <FileRef
+      location = "group:project/test.py">
+   </FileRef>
 </Workspace>

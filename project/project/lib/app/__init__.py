@@ -13,6 +13,12 @@ from dataclasses import dataclass, field
 
 
 
+
+
+#from ._app import _PROMPTS
+
+
+
 # 	CLASS:  "APP"
 #
 @dataclass(order=True, kw_only=True)
@@ -32,6 +38,14 @@ class App:
 	name: 			str			    = field(default=None,
                                             init=True,              compare=True,
                                             hash=True,              repr=True)
+                                            
+	pos: 	        dict		    = field(default_factory=dict,
+                                            init=False,             compare=False,
+                                            hash=False,             repr=False)
+                                            
+	prompts: 	    dict		    = field(default_factory=dict,
+                                            init=False,             compare=False,
+                                            hash=False,             repr=False)
   
 
 ###############################################################################
