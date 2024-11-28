@@ -28,7 +28,7 @@ class App:
 
     #   Class Methods (Imported from "_name.py" files)...
 	from ._app import __post_init__
-	from ._app import main
+	from ._app import run
  
  
 	################################################################
@@ -37,6 +37,10 @@ class App:
 	################################################################
 	name: 			str			    = field(default=None,
                                             init=True,              compare=True,
+                                            hash=True,              repr=True)
+                                            
+	lw: 			int			    = field(default=87,
+                                            init=False,              compare=True,
                                             hash=True,              repr=True)
                                             
 	pos: 	        dict		    = field(default_factory=dict,

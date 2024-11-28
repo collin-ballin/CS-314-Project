@@ -41,7 +41,7 @@ def main() -> int:
     #   1.  MAIN PROGRAM LOOPS ...
     try:
         my_app = app.App()
-        my_app.main()
+        status = my_app.run()
     #
     #
     #   2.  EXCEPTION-CATCHING BLOCKS ...

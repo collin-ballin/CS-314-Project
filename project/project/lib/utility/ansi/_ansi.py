@@ -153,10 +153,9 @@ def get_cursor_pos() -> tuple:
         tty.setraw(fd)
         sys.stdout.write(GET_POS)
         sys.stdout.flush()
-
-        # I nitialize an empty response
+        
         response = ''
-        while True:
+        while (True):
             # Read one character at a time
             char = sys.stdin.read(1)
             if (char == 'R'):
@@ -178,7 +177,15 @@ def get_cursor_pos() -> tuple:
         
     return
 
+
+
+#   "print_at"
+#
+def print_at(pos:tuple, msg:str):
+    sys.stdout.write(f"{SET(pos[0],pos[1])}{msg}")
+    return
     
+
 
 ###############################################################################
 ###############################################################################

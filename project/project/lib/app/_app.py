@@ -30,14 +30,20 @@ _PROMPTS    = {
     #   Utility Texts...
     "tc"                : f"{ANSI.GREEN_BRIGHT}",   #   'tc'    = terminal color (color for output of program).
     "header"            : "WELCOME TO THE \"CHOCOHOLICS ANONYMOUS\" HEALTHCARE DATABASE MANAGMENT SYSTEM!",
-    "line"              : f"\n{ANSI.CYAN}" + _LW * '═' + f"{ANSI.RESET}",
-    "o_cursor"          : f"{ANSI.GREEN_BB}█{ANSI.RESET} ",
+    "line"              : f"{ANSI.WHITE_BB}" + _LW * '═' + f"{ANSI.RESET}",
+    "o1_cursor"         : f"{ANSI.GREEN_BB}{ANSI.INVERSE}1{ANSI.RESET} ",
+    "o2_cursor"         : f"{ANSI.GREEN_BB}{ANSI.INVERSE}2{ANSI.RESET} ",
+    "o3_cursor"         : f"{ANSI.GREEN_BB}{ANSI.INVERSE}3{ANSI.RESET} ",
     "i_cursor"          : f"{ANSI.RED_BOLD}{ANSI.BLINK}█{ANSI.RESET} ",
     #
     #
     #   Prompts / Output...
     "provider_1"        : f"Please enter your 9-digit provider ID number: ",
     "t_cursor"          : f"",
+    #
+    #
+    #   Exception Handling / Termination...
+    "normal_exit"       : "Program terminating.  Have a great day!",
 }
 
 
@@ -48,74 +54,92 @@ _PROMPTS    = {
 #
 #
 #
-#   MEMBER FUNCTION FOR "APP" CLASS (IMPORTED)...
+#   UTILITY / PRIVATE FUNCTIONS FOR "APP" CLASS...
 ###############################################################################
 ###############################################################################
 
-#   "__post_init__"
+
+def load_users_from_file(file_path):
+    with open(file_path, 'r') as file:
+        users_data = json.load(file)
+
+    users = []
+    for user_data in users_data:
+        if user_data["type"] == "Member":
+            user = Member(
+                user_data["name"],
+                user_data["street_address"],
+                user_data["city"],
+                user_data["state"],
+                user_data["zip"],
+                user_data["membership_number"]
+            )
+        elif user_data["type"] == "Provider":
+            user = Provider(
+                user_data["name"],
+                user_data["street_address"],
+                user_data["city"],
+                user_data["state"],
+                user_data["zip"],
+                user_data["provider_id"]
+            )
+        users.append(user)
+    return users
+    
+    
+    
+#   draw_UI
 #
-def __post_init__(self):
-    #
-    try:
-        home    = ANSI.get_cursor_pos()
+def draw_UI(self):
+    #   1.  PRINTING THE FORMATTING OF THE COMMAND-LINE APPLICATION...
+    ANSI.print_at( self.pos['home'],
+                   UTL.make_dboxed(self.prompts['header'], textcolor=ANSI.CYAN_BB, boxcolor=ANSI.WHITE_BB, lw=self.lw) )
+    ANSI.print_at( self.pos['line'], self.prompts['line'] )
+    ANSI.print_at( self.pos['last'],  self.prompts['line'] )
     
-        self.pos        = {
-            "home"  : ANSI.get_cursor_pos()
-        }
-    
-        self.prompts    = _PROMPTS
-    #
-    #
-    except:
-        pass
-        
     return
-    
 
 
+
+#   "display_prompt"
+#
+def display_prompt(self, text1:str, text2:str='', text3:str=''):
+    ANSI.print_at(self.pos['out1'], f"{ANSI.CRETURN}{ANSI.CLEAR_LINE}{self.prompts['o1_cursor']} {self.prompts['tc']}{text1}{ANSI.RESET}")
+    ANSI.print_at(self.pos['out2'], f"{ANSI.CRETURN}{ANSI.CLEAR_LINE}{self.prompts['o2_cursor']} {self.prompts['tc']}{text2}{ANSI.RESET}")
+    ANSI.print_at(self.pos['out3'], f"{ANSI.CRETURN}{ANSI.CLEAR_LINE}{self.prompts['o3_cursor']} {self.prompts['tc']}{text3}{ANSI.RESET}")
+    ANSI.print_at(self.pos['in'], f"{ANSI.CRETURN}{ANSI.CLEAR_LINE}{self.prompts['i_cursor']} ")
     
+    return
+
+
+
+#   "display_input_prompt"
+#
+def display_input_prompt(self, text1:str, text2:str='', text3:str=''):
+    display_prompt(self, text1, text2, text3)
+    return input("")
+
+
+
 #   "main"
 #
 def main(self):
-
-    def print_at(pos:tuple, text:str):
-        sys.stdout.write(f"{ANSI.SET(pos[0], pos[1])}{text}")
-        return
-
-
-
     #UTL.log("Inside the \"App\" class...", ANSI.NOTE)
-
-
-    print( UTL.make_dboxed(_PROMPTS['header'], textcolor=ANSI.CYAN_BB, boxcolor=ANSI.CYAN, lw=_LW),)
-    print( _PROMPTS['o_cursor'] + "\n" + _PROMPTS['line'] + "\n" + _PROMPTS['line'])
-    #ANSI.up(4)
+        
+    #   1.  Print the "UI" for the command-line application...
+    draw_UI(self)
     
     
-    
-    def display_input_prompt(text:str, params:dict=_PROMPTS):
-        print(f"{ANSI.UP(4)}{ANSI.CRETURN}{ANSI.CLEAR_LINE}{_PROMPTS['o_cursor']} ", end='')
-        print(f"{params['tc']}{text}{ANSI.RESET}", end='')
-        return input(f"{ANSI.DOWN(3)}{ANSI.CRETURN}{ANSI.CLEAR_LINE}{_PROMPTS['i_cursor']} ")
+    #   2.  PRINTING THE FORMATTING OF THE COMMAND-LINE APPLICATION...
+    ANSI.print_at( self.pos['line'], self.prompts['line'] )
+    ANSI.print_at( self.pos['last'],  self.prompts['line'] )
         
         
-    ANSI.up(1)
-    response = display_input_prompt(self.prompts['provider_1'])
+    #   3.  MAIN PROGRAM LOOP...
+    response = display_input_prompt(self, self.prompts['provider_1'])
     
-    
-    response = display_input_prompt(f"You entered \"{response}\"")
-    
-    
-    response = display_input_prompt(f"And now, you have entered \"{response}\"")
-    
-    
-    
-    #print_at( (99,0), "text")
-    #display_input_prompt(_PROMPTS['provider_1'])
-    
-    sys.stdout.write(f"The current position is: {ANSI.get_cursor_pos()}")
-    
-    input(f"")
+    while (True):
+        response = display_input_prompt(self, f"recieved: \"{response}\"")
     
     return
     
@@ -140,8 +164,70 @@ def main_old(self):
     
     return
 
-
 ###############################################################################
+#
+#
+#
+#
+#
+#
+#   MEMBER FUNCTION FOR "APP" CLASS (IMPORTED)...
+###############################################################################
+###############################################################################
+
+#   "__post_init__"
+#
+def __post_init__(self):
+    #
+    try:
+        home            = ANSI.get_cursor_pos()
+        self.pos        = {
+            "home"  : home,
+            "out1"  : (home[0]+3, 0),
+            "out2"  : (home[0]+4, 0),
+            "out3"  : (home[0]+5, 0),
+            "line"  : (home[0]+6, 0),
+            "in"    : (home[0]+7, 0),
+            "last"  : (home[0]+8, 0),
+            "end"   : (home[0]+9, 0),
+        }
+        self.prompts    = _PROMPTS
+    #
+    #
+    except ValueError as e:
+        raise(e)
+        
+    return
+    
+    
+    
+#   "run"
+#
+def run(self) -> int:
+    status = 0
+    
+    #   1.  TRY-BLOCK...
+    try:
+        sys.stdout.write(f"{ANSI.HIDE}")
+        main(self)
+    #
+    #   2.  EXCEPTION-CATCHING BLOCKS...
+    except KeyboardInterrupt as e:
+        UTL.log(f"Caught CTRL-C Keyboard Interuption.  Exiting...")
+        #UTL.log(f"{e}",color=False)
+        
+    except Exception as e:
+        UTL.log("FALLBACK EXCEPTION CASE.  An specified exception has been thrown.",type=ANSI.ERROR)
+        UTL.log(f"{e}",color=False)
+        traceback.print_exc()
+        status = 1
+    #
+    #   3.  FINALLY...
+    finally:
+        sys.stdout.write(f"{ANSI.SET(self.pos['end'])}{ANSI.SHOW}")
+        display_prompt(self, self.prompts['normal_exit'])
+    
+    return status
 
 
 

@@ -46,7 +46,7 @@ from ._ansi import CRETURN,         _BELL,          SAVE,           RECALL,     
                    DOWN,            RIGHT,          LEFT,           BELL
 from ._ansi import set,             save,           recall,         up,                 \
                    down,            right,          left,           set_terminal_title, \
-                   hide,            show,           get_cursor_pos
+                   hide,            show,           get_cursor_pos, print_at
                    
     
 #   2.  LOG TAG-DISPATCH VALUES.
