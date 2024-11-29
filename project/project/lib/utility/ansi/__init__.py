@@ -36,7 +36,7 @@ from ._ansi import BLACK_BB,        RED_BB,         GREEN_BB,       YELLOW_BB,  
 #   Import 1.5.
 from ._ansi import RESET,           RESET_ALL,      BOLD,           DIM,                \
                    ITALIC,          UNDERLINE,      BLINK,          INVERSE,            \
-                   HIDDEN,          STRIKETHROUGH
+                   HIDDEN,          STRIKETHROUGH,  DISABLE_WRAP,   ENABLE_WRAP
 
 #   Import 1.6.
 from ._ansi import CLEAR,           CLEAR_ABOVE,    CLEAR_BELOW,    CLEAR_LINE,         \

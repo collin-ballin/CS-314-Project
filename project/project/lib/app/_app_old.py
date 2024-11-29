@@ -13,7 +13,7 @@ from lib.utility import ANSI
 import lib.utility as UTL
 from lib.users import Member, Provider
 
-import json, sys, time, traceback, curses
+import json, sys, time, curses
 from PIL import Image
 
 
@@ -31,8 +31,10 @@ _PROMPTS    = {
     "tc"                : f"{ANSI.GREEN_BRIGHT}",   #   'tc'    = terminal color (color for output of program).
     "header"            : "WELCOME TO THE \"CHOCOHOLICS ANONYMOUS\" HEALTHCARE DATABASE MANAGMENT SYSTEM!",
     "line"              : f"{ANSI.WHITE_BB}" + _LW * '═' + f"{ANSI.RESET}",
-    "o_cursor"          : f"█ ",
-    "i_cursor"          : f"INPUT ",
+    "o1_cursor"         : f"{ANSI.GREEN_BB}{ANSI.INVERSE}1{ANSI.RESET} ",
+    "o2_cursor"         : f"{ANSI.GREEN_BB}{ANSI.INVERSE}2{ANSI.RESET} ",
+    "o3_cursor"         : f"{ANSI.GREEN_BB}{ANSI.INVERSE}3{ANSI.RESET} ",
+    "i_cursor"          : f"{ANSI.RED_BB}{ANSI.INVERSE}INPUT{ANSI.RESET}{ANSI.RED_BB}{ANSI.BLINK} █ {ANSI.RESET}",
     #
     #
     #   Prompts / Output...
@@ -55,8 +57,86 @@ _PROMPTS    = {
 #   UTILITY / PRIVATE FUNCTIONS FOR "APP" CLASS...
 ###############################################################################
 ###############################################################################
+    
+#   draw_UI
+#
+def draw_UI(self):
+    #   1.  PRINTING THE FORMATTING OF THE COMMAND-LINE APPLICATION...
+    sys.stdout.write(f"\f")
+    ANSI.print_at( self.pos['home'],
+                   UTL.make_dboxed(self.prompts['header'], textcolor=ANSI.CYAN_BB, boxcolor=ANSI.WHITE_BB, lw=self.lw) )
+    ANSI.print_at( self.pos['line'],  self.prompts['line'] )
+    ANSI.print_at( self.pos['last'],  self.prompts['line'] )
+    ANSI.print_at( self.pos['end'],   '\n' )
+    
+    sys.stdout.write(f"\f")
+    
+    return
 
 
+
+#   "display_prompt"
+#
+def display_prompt(self, text1:str, text2:str='', text3:str=''):
+    ANSI.print_at(self.pos['out1'], f"{ANSI.CRETURN}{ANSI.CLEAR_LINE}{self.prompts['o1_cursor']} {self.prompts['tc']}{text1}{ANSI.RESET}")
+    ANSI.print_at(self.pos['out2'], f"{ANSI.CRETURN}{ANSI.CLEAR_LINE}{self.prompts['o2_cursor']} {self.prompts['tc']}{text2}{ANSI.RESET}")
+    ANSI.print_at(self.pos['out3'], f"{ANSI.CRETURN}{ANSI.CLEAR_LINE}{self.prompts['o3_cursor']} {self.prompts['tc']}{text3}{ANSI.RESET}")
+    ANSI.print_at(self.pos['in'], f"{ANSI.CRETURN}{ANSI.CLEAR_LINE}{self.prompts['i_cursor']} ")
+    
+    return
+
+
+
+#   "display_input_prompt"
+#
+def display_input_prompt(self, text1:str, text2:str='', text3:str=''):
+    display_prompt(self, text1, text2, text3)
+    return input("")
+
+
+        
+#   "main"
+#
+def main(self):
+    #   1.  Print the "UI" for the command-line application...
+    sys.stdout.write(f"{ANSI.DISABLE_WRAP}")
+    #sys.stdout.write(f"\033[=1h")
+    draw_UI(self)
+    
+    
+    #   2.  PRINTING THE FORMATTING OF THE COMMAND-LINE APPLICATION...
+    ANSI.print_at( self.pos['line'], self.prompts['line'] )
+    ANSI.print_at( self.pos['last'],  self.prompts['line'] )
+        
+        
+    #   3.  MAIN PROGRAM LOOP...
+    response = display_input_prompt(self, self.prompts['provider_1'])
+    
+    while (True):
+        response = display_input_prompt(self, f"recieved: \"{response}\"")
+    
+    return
+    
+ 
+ 
+#   "main_old"
+#
+def main_old(self):
+    UTL.log("Inside the \"App\" class...", ANSI.NOTE)
+   
+    
+    member_1    = Member(name="Collin A. Bond and a lot of text",   id="1234123412341234",
+                         address="308 Negra Arroyo Lane",           state="Oregon",
+                         city="Portland")
+                         
+    member_2    = Member(name="Walter H. White",                    id="490662",
+                         address="308 Negra Arroyo Lane",           city="Albuquerque",
+                         state="NM",                                zip="87104")
+    
+   
+    member_2.display()
+    
+    return
 
 ###############################################################################
 #
@@ -165,168 +245,36 @@ def __post_init__(self):
     return
     
     
-    
-    
-    
-#   "setup_UI"
-#
-def setup_UI(self, stdscr):
 
-    #   0.  INITIALIZE ELEMENTS OF UI...
-    #
-    #       0.1.    Colors.
-    curses.start_color()
-    curses.init_pair(1, curses.COLOR_CYAN, curses.COLOR_BLACK)      #   Header Text.
-    curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)     #   Output Text.
-    curses.init_pair(3, curses.COLOR_RED, curses.COLOR_BLACK)       #   Input Text.
-    #
-    #       0.2.    Initial Commands.
-    stdscr.clear()                                                  #   Clear the screen
-    #
-    #       0.3.    Initial Values.
-    #curses.curs_set(0)                                             #   ANSI.HIDE
-    curses.noecho()                                                 #   Disable real-time printing of input to screen.
-    height, width = stdscr.getmaxyx()                               #   Screen Dimensions.
-    
-    
-    #   2.  CREATE WINDOW FOR EACH SECTION OF OUTPUT...
-    #
-    #       2.1.    Header Window.
-    header_win              = curses.newwin(3, width - 2, 0, 1)  # 3 lines high, full width
-    header_win.box()
-    header_win.addstr(1, 2, self.prompts['header'], curses.color_pair(1)|curses.A_BOLD)
-    header_win.refresh()
-    #
-    #       2.2.    Program-Output Window.
-    output_win              = curses.newwin(6, width - 2, 4, 1)  # 6 lines high, below header
-    output_win.box()
-    output_win.refresh()
-    #
-    #       2.3.    User-Input Window.
-    input_win               = curses.newwin(3, width - 2, 11, 1)  # 3 lines high, below output
-    rectangle(stdscr, 1, 0, 1 + 5 + 1, 1 + 30 + 1)  # Draw a rectangle around the edit window
-    stdscr.refresh()
-
-    # Create the Textbox object
-    box = Textbox(editwin)
-    
-    
-    input_win               = curses.newwin(3, width - 2, 11, 1)  # 3 lines high, below output
-    input_win.box()
-    input_win.addstr(1, 2, "INPUT", curses.color_pair(3))  # Red input label
-    input_win.refresh()
-    
-    
-    #   3.  ASSIGN EACH WINDOW TO THE CLASS UI...
-    self.UI['header']       = header_win
-    self.UI['out']          = output_win
-    self.UI['in']           = input_win
-    
-    return
-    
-    
-    
-#   "main"
-#
-def main(self, stdscr):
-    #UTL.log(f"Type of \"stdscr\" = {stdscr}.", ANSI.NOTE)
-    setup_UI(self, stdscr)
-    
-    
-    self.UI['out'].clear()
-    self.UI['out'].box()
-    self.UI['out'].addstr(1, 2, self.prompts['provider_1'], curses.color_pair(2)|curses.A_BOLD)
-    self.UI['out'].refresh()
-
-    
-
-    # Main interaction loop
-    while (True):
-        # Example prompt and user input handling
-        #self.UI['out'].clear()
-        #self.UI['out'].box()
-        #self.UI['out'].addstr(1, 2, "Please enter your 9-digit provider ID number:", curses.color_pair(2))
-        #self.UI['out'].refresh()
-
-        # Get user input
-        self.UI['in'].clear()
-        self.UI['in'].box()
-        self.UI['in'].addstr(1, 2, self.prompts['i_cursor'], curses.color_pair(3))
-        self.UI['in'].refresh()
-
-        curses.echo()
-        input_value = self.UI['in'].getstr(1, 8).decode('utf-8')  # Capture user input
-        
-        # Display the user's input back in the output area
-        self.UI['out'].clear()
-        self.UI['out'].box()
-        self.UI['out'].addstr(1, 2, f"Received: \"{input_value}\"", curses.color_pair(2))
-        self.UI['out'].refresh()
-        
-    return
-    
-    
-    
-def holder(self, stdscr):
-    # Main interaction loop
-    while (True):
-        # Example prompt and user input handling
-        self.UI['out'].clear()
-        self.UI['out'].box()
-        self.UI['out'].addstr(1, 2, "1 Please enter your 9-digit provider ID number:", curses.color_pair(2))
-        #self.UI['out'].refresh()
-
-        # Get user input
-        self.UI['in'].clear()
-        self.UI['in'].box()
-        self.UI['in'].addstr(1, 2, "INPUT", curses.color_pair(3))
-        #self.UI['in'].refresh()
-
-        curses.echo()
-        input_value = self.UI['in'].getstr(1, 8).decode('utf-8')  # Capture user input
-        
-        # Display the user's input back in the output area
-        self.UI['out'].clear()
-        self.UI['out'].box()
-        self.UI['out'].addstr(1, 2, f"1 Received: \"{input_value}\"", curses.color_pair(2))
-        #self.UI['out'].refresh()
-
-        # Note: Loop will continue and input will be asked again, just like your screenshots showed
-        
-    return
-    
-    
-    
 #   "run"
 #
 def run(self) -> int:
     status = 0
-    sys.stdout.write(f"{ANSI.ENABLE_WRAP}")
     
     #   1.  TRY-BLOCK...
     try:
-        #stdscr = curses.initscr()
-        curses.wrapper(self.main)
+        sys.stdout.write(f"{ANSI.HIDE}")
+        main(self)
     #
     #   2.  EXCEPTION-CATCHING BLOCKS...
     except KeyboardInterrupt as e:
         UTL.log(f"Caught CTRL-C Keyboard Interuption.  Exiting...")
-        UTL.log(f"{e}", color=False)
+        #UTL.log(f"{e}",color=False)
         
     except Exception as e:
         UTL.log("FALLBACK EXCEPTION CASE.  An specified exception has been thrown.",type=ANSI.ERROR)
-        UTL.log(f"{e}", color=False)
+        UTL.log(f"{e}",color=False)
         traceback.print_exc()
         status = 1
     #
     #   3.  FINALLY...
     finally:
-        pass
+        sys.stdout.write(f"{ANSI.SET(self.pos['end'])}{ANSI.SHOW}")
+        display_prompt(self, self.prompts['normal_exit'])
     
     return status
-    
-    
-    
+
+
 
 ###############################################################################
 ###############################################################################

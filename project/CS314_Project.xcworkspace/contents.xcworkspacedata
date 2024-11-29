@@ -5,6 +5,9 @@
       location = "container:../project/project"
       name = "project">
       <FileRef
+         location = "group:test.py">
+      </FileRef>
+      <FileRef
          location = "group:main.py">
       </FileRef>
       <Group
@@ -21,6 +24,9 @@
             </FileRef>
             <FileRef
                location = "group:_app.py">
+            </FileRef>
+            <FileRef
+               location = "group:_app_old.py">
             </FileRef>
             <Group
                location = "group:__pycache__"
@@ -163,6 +169,19 @@
                </FileRef>
             </Group>
          </Group>
+      </Group>
+      <Group
+         location = "group:data"
+         name = "data">
+         <FileRef
+            location = "group:logomark.png">
+         </FileRef>
+         <FileRef
+            location = "group:users.json">
+         </FileRef>
+         <FileRef
+            location = "group:data.txt">
+         </FileRef>
       </Group>
    </Group>
 </Workspace>

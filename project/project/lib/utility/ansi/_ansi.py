@@ -74,6 +74,8 @@ BLINK               = "\033[5m"
 INVERSE             = "\033[7m"
 HIDDEN              = "\033[8m"
 STRIKETHROUGH       = "\033[9m"
+DISABLE_WRAP        = "\033[?7l"
+ENABLE_WRAP         = "\033[?7h"
 
 
 #                   2.6.    Cursor Movement Commands.

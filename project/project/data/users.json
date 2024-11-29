@@ -1,0 +1,20 @@
+[
+    {
+        "type": "Member",
+        "name": "John Doe",
+        "id": "000000001",
+        "address": "123 Main St",
+        "city": "Somewhere",
+        "state": "CA",
+        "zip": "90210"
+    },
+    {
+        "type": "Member",
+        "name": "Jane Doe",
+        "id": "000000002",
+        "address": "123 Main St",
+        "city": "Somewhere",
+        "state": "CA",
+        "zip": "90210"
+    }
+]
