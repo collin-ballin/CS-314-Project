@@ -5,10 +5,13 @@
       location = "container:../project/project"
       name = "project">
       <FileRef
-         location = "group:test.py">
+         location = "group:main.py">
       </FileRef>
       <FileRef
-         location = "group:main.py">
+         location = "container:project/test_service.py">
+      </FileRef>
+      <FileRef
+         location = "group:test.py">
       </FileRef>
       <Group
          location = "group:lib"

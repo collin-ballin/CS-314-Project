@@ -6,7 +6,19 @@
         "address": "123 Main St",
         "city": "Somewhere",
         "state": "CA",
-        "zip": "90210"
+        "zip": "90210",
+        "history": [
+            {
+                "date": "01-15-2023",
+                "provider_name": "Jane Smith",
+                "service_name": "X-Ray"
+            },
+            {
+                "date": "03-20-2023",
+                "provider_name": "Alice Brown",
+                "service_name": "Check-up"
+            }
+        ]
     },
     {
         "type": "Member",

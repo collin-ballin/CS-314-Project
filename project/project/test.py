@@ -143,3 +143,160 @@ if __name__ == "__main__":
     value = curses.wrapper(test)
     print(f"Message recieved was:\n\"{value}\".")
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def holder(self, stdscr):
+    # Main interaction loop
+    while (True):
+        # Example prompt and user input handling
+        self.UI['out'].clear()
+        self.UI['out'].box()
+        self.UI['out'].addstr(1, 2, "1 Please enter your 9-digit provider ID number:", curses.color_pair(2))
+        #self.UI['out'].refresh()
+
+        # Get user input
+        self.UI['in'].clear()
+        self.UI['in'].box()
+        self.UI['in'].addstr(1, 2, "INPUT", curses.color_pair(3))
+        #self.UI['in'].refresh()
+
+        curses.echo()
+        input_value = self.UI['in'].getstr(1, 8).decode('utf-8')  # Capture user input
+        
+        # Display the user's input back in the output area
+        self.UI['out'].clear()
+        self.UI['out'].box()
+        self.UI['out'].addstr(1, 2, f"1 Received: \"{input_value}\"", curses.color_pair(2))
+        #self.UI['out'].refresh()
+
+        # Note: Loop will continue and input will be asked again, just like your screenshots showed
+        
+    return
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def setup_UI(self, stdscr):
+
+    #   0.  INITIALIZE ELEMENTS OF UI...
+    #
+    #       0.1.    Colors.
+    curses.start_color()
+    curses.init_pair(1, curses.COLOR_CYAN, curses.COLOR_BLACK)      #   Header Text.
+    curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)     #   Output Text.
+    curses.init_pair(3, curses.COLOR_RED, curses.COLOR_BLACK)       #   Input Text.
+    #
+    #       0.2.    Initial Commands.
+    stdscr.clear()                                                  #   Clear the screen
+    #
+    #       0.3.    Initial Values.
+    #curses.curs_set(0)                                             #   ANSI.HIDE
+    curses.noecho()                                                 #   Disable real-time printing of input to screen.
+    height, width = stdscr.getmaxyx()                               #   Screen Dimensions.
+    
+    
+    #   2.  CREATE WINDOW FOR EACH SECTION OF OUTPUT...
+    #
+    #       2.1.    Header Window.
+    header_win              = curses.newwin(3, width - 2, 0, 1)  # 3 lines high, full width
+    header_win.box()
+    header_win.addstr(1, 2, self.prompts['header'], curses.color_pair(1)|curses.A_BOLD)
+    header_win.refresh()
+    #
+    #       2.2.    Program-Output Window.
+    output_win              = curses.newwin(6, width - 2, 4, 1)  # 6 lines high, below header
+    output_win.box()
+    output_win.refresh()
+    #
+    #       2.3.    User-Input Window.
+    input_win               = curses.newwin(3, width - 2, 11, 1)  # 3 lines high, below output
+    rectangle(stdscr, 1, 0, 1 + 5 + 1, 1 + 30 + 1)  # Draw a rectangle around the edit window
+    stdscr.refresh()
+
+    # Create the Textbox object
+    box = Textbox(editwin)
+    
+    
+    input_win               = curses.newwin(3, width - 2, 11, 1)  # 3 lines high, below output
+    input_win.box()
+    input_win.addstr(1, 2, "INPUT", curses.color_pair(3))  # Red input label
+    input_win.refresh()
+    
+    
+    #   3.  ASSIGN EACH WINDOW TO THE CLASS UI...
+    self.UI['header']       = header_win
+    self.UI['out']          = output_win
+    self.UI['in']           = input_win
+    
+    return

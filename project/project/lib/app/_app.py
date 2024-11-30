@@ -13,8 +13,10 @@ from lib.utility import ANSI
 import lib.utility as UTL
 from lib.users import Member, Provider
 
-import json, sys, time, traceback, curses
+import json, sys, time, traceback
 from PIL import Image
+import curses
+import curses.textpad as tp
 
 
 
@@ -83,14 +85,16 @@ def load_users(self, file_path:str) -> tuple:
     for item in data:
         #   CASE 1 :    Loaded a "Member" from the file.
         if (item["type"] == "Member"):
+            #           1.1.    Load the main fields of the member.
             user = Member(
-                name    =item["name"],
-                id      =item["id"],
-                address =item["address"],
-                city    =item["city"],
-                state   =item["state"],
-                zip     =item["zip"],
+                name=item["name"],      id=item["id"],          address=item["address"],
+                city=item["city"],      state=item["state"],    zip=item["zip"],
             )
+            #           1.2.    Load the historical records of the member.
+            for record in item.get("history", []):
+                entry = (record["date"], record["provider_name"], record["service_name"])
+                user.history.append( entry )
+            
             self.members.append(user)
             idx     += 1
             m_idx   += 1
@@ -125,6 +129,7 @@ def __post_init__(self):
     
     #   1.  TRY-BLOCK...
     try:
+        #   1.1.    Assigning Positions.
         home            = ANSI.get_cursor_pos()
         self.pos        = {
             "home"  : home,
@@ -138,6 +143,10 @@ def __post_init__(self):
         }
         self.prompts    = _PROMPTS
         load_info       = load_users(self, file)
+        
+        #   1.2.    Setting UI Dimensions.
+        self.UI['in'] = { 'height' : 3, 'width' : 30 }
+        
     #
     #
     #   2.  CATCH-BLOCK...
@@ -186,112 +195,72 @@ def setup_UI(self, stdscr):
     #       0.3.    Initial Values.
     #curses.curs_set(0)                                             #   ANSI.HIDE
     curses.noecho()                                                 #   Disable real-time printing of input to screen.
-    height, width = stdscr.getmaxyx()                               #   Screen Dimensions.
+    height, width           = stdscr.getmaxyx()                     #   Screen Dimensions.
+    self.UI['global']       = { 'height':height, 'width':width }
     
     
     #   2.  CREATE WINDOW FOR EACH SECTION OF OUTPUT...
     #
-    #       2.1.    Header Window.
-    header_win              = curses.newwin(3, width - 2, 0, 1)  # 3 lines high, full width
-    header_win.box()
-    header_win.addstr(1, 2, self.prompts['header'], curses.color_pair(1)|curses.A_BOLD)
-    header_win.refresh()
-    #
-    #       2.2.    Program-Output Window.
-    output_win              = curses.newwin(6, width - 2, 4, 1)  # 6 lines high, below header
-    output_win.box()
-    output_win.refresh()
-    #
     #       2.3.    User-Input Window.
-    input_win               = curses.newwin(3, width - 2, 11, 1)  # 3 lines high, below output
-    rectangle(stdscr, 1, 0, 1 + 5 + 1, 1 + 30 + 1)  # Draw a rectangle around the edit window
+    stdscr.addstr(0, 0, f"{self.prompts['i_cursor']}")
+    input_win               = curses.newwin( self.UI['in']['height'], self.UI['in']['width']-2, 2, 1)  # 3 lines high, below output
+    input_box               = tp.rectangle(stdscr, 1, 0, 1 + self.UI['in']['height'] + 1, 1 + self.UI['in']['width'] + 1)
+    input_tbox              = tp.Textbox(input_win)
     stdscr.refresh()
-
-    # Create the Textbox object
-    box = Textbox(editwin)
     
     
-    input_win               = curses.newwin(3, width - 2, 11, 1)  # 3 lines high, below output
-    input_win.box()
-    input_win.addstr(1, 2, "INPUT", curses.color_pair(3))  # Red input label
-    input_win.refresh()
+    #   3.  ASSIGNING EACH WINDOW TO DICTIONARY...
+    #
+    self.UI['in']['win']    = input_win
+    self.UI['in']['box']    = input_box
+    self.UI['in']['tbox']   = input_tbox
     
-    
-    #   3.  ASSIGN EACH WINDOW TO THE CLASS UI...
-    self.UI['header']       = header_win
-    self.UI['out']          = output_win
-    self.UI['in']           = input_win
     
     return
     
     
-    
+
+
 #   "main"
 #
 def main(self, stdscr):
     #UTL.log(f"Type of \"stdscr\" = {stdscr}.", ANSI.NOTE)
     setup_UI(self, stdscr)
-    
-    
-    self.UI['out'].clear()
-    self.UI['out'].box()
-    self.UI['out'].addstr(1, 2, self.prompts['provider_1'], curses.color_pair(2)|curses.A_BOLD)
-    self.UI['out'].refresh()
+    box = self.UI['in']['tbox']
 
-    
 
-    # Main interaction loop
+
     while (True):
-        # Example prompt and user input handling
-        #self.UI['out'].clear()
-        #self.UI['out'].box()
-        #self.UI['out'].addstr(1, 2, "Please enter your 9-digit provider ID number:", curses.color_pair(2))
-        #self.UI['out'].refresh()
+        # Edit the box manually to capture each key press
+        key = box.win.getch()
 
-        # Get user input
-        self.UI['in'].clear()
-        self.UI['in'].box()
-        self.UI['in'].addstr(1, 2, self.prompts['i_cursor'], curses.color_pair(3))
-        self.UI['in'].refresh()
+        #   CASE 1 :    "ENTER"
+        if ( (key == curses.KEY_ENTER) or (key == 10) or (key == 13) ):
+            break
+        #
+        #   CASE 2 :    "BACKSPACE"
+        elif key in (curses.KEY_BACKSPACE, 127):
+            y, x = box.win.getyx()
+            if (x > 0):#                    2.1.    Delete in the middle of the line.
+                box.win.delch(y, x - 1)
+                
+            elif (y > 0):#                    2.2.    Delete in the middle of the line.
+                box.win.delch(y-1, x)
+        #
+        #   CASE 3 :    "NORMAL CHARACTER"
+        else:
+            box.win.addch(key)
 
-        curses.echo()
-        input_value = self.UI['in'].getstr(1, 8).decode('utf-8')  # Capture user input
-        
-        # Display the user's input back in the output area
-        self.UI['out'].clear()
-        self.UI['out'].box()
-        self.UI['out'].addstr(1, 2, f"Received: \"{input_value}\"", curses.color_pair(2))
-        self.UI['out'].refresh()
-        
-    return
-    
-    
-    
-def holder(self, stdscr):
-    # Main interaction loop
-    while (True):
-        # Example prompt and user input handling
-        self.UI['out'].clear()
-        self.UI['out'].box()
-        self.UI['out'].addstr(1, 2, "1 Please enter your 9-digit provider ID number:", curses.color_pair(2))
-        #self.UI['out'].refresh()
 
-        # Get user input
-        self.UI['in'].clear()
-        self.UI['in'].box()
-        self.UI['in'].addstr(1, 2, "INPUT", curses.color_pair(3))
-        #self.UI['in'].refresh()
+    # Get resulting contents
+    message = box.gather()
 
-        curses.echo()
-        input_value = self.UI['in'].getstr(1, 8).decode('utf-8')  # Capture user input
-        
-        # Display the user's input back in the output area
-        self.UI['out'].clear()
-        self.UI['out'].box()
-        self.UI['out'].addstr(1, 2, f"1 Received: \"{input_value}\"", curses.color_pair(2))
-        #self.UI['out'].refresh()
+    # Display the message in the terminal (for testing)
+    stdscr.addstr(8, 0, f"Message submitted: {message}")
+    stdscr.refresh()
 
-        # Note: Loop will continue and input will be asked again, just like your screenshots showed
+    # Wait for user to see the output before exiting
+    stdscr.getch()
         
     return
     
