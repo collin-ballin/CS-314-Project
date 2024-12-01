@@ -86,7 +86,7 @@ class Service:
     #
     def __str__(self) -> str:
         w1      = 22
-        w2      = 35
+        w2      = 45
         s       = 7
         sep     = s * '.'
         pre     = w1 + s + 2

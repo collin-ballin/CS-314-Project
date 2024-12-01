@@ -1,35 +1,79 @@
 [
     {
         "type"          : "Member",
-        "name"          : "John Doe",
+        "name"          : "Collin A Bond",
         "id"            : "000000001",
-        "address"       : "123 Main St",
-        "city"          : "Somewhere",
-        "state"         : "CA",
-        "zip"           : "90210",
+        "address"       : "10 Marshall St",
+        "city"          : "Portland",
+        "state"         : "OR",
+        "zip"           : "97009",
         "history"       : [
             {
                 "name"          : "X-Ray",
-                "id"            : "000001",
-                "dos"           : "28-11-2024",
+                "id"            : "500001",
+                "dos"           : "15-11-2024",
                 "dor"           : "28-11-2024 11:37:15",
                 "patient_name"  : "Collin A Bond",
-                "patient_id"    : "100000007",
-                "provider_name" : "Providence",
+                "patient_id"    : "000000001",
+                "provider_name" : "Dr. Gregory House",
                 "provider_id"   : "900000001",
-                "comments"      : "900000001",
+                "comments"      : "I have blood dripping out my nose that is dripping",
+                "fee"           : 123.12
+            },
+            {
+                "name"          : "Nuclear-Magnetic Resonance Image",
+                "id"            : "100001",
+                "dos"           : "20-11-2024",
+                "dor"           : "20-11-2024 11:37:15",
+                "patient_name"  : "Collin A Bond",
+                "patient_id"    : "000000001",
+                "provider_name" : "Dr. Gregory House",
+                "provider_id"   : "900000001",
+                "comments"      : "I was also bitten by a mouse due to my poor hygiene",
+                "fee"           : 123.12
+            },
+            {
+                "name"          : "Specialty Consultation",
+                "id"            : "990001",
+                "dos"           : "24-11-2024",
+                "dor"           : "28-11-2024 11:37:15",
+                "patient_name"  : "Collin A Bond",
+                "patient_id"    : "000000001",
+                "provider_name" : "Dr. Gregory House",
+                "provider_id"   : "900000001",
+                "comments"      : "Patient needs mouse bites to live...",
                 "fee"           : 123.12
             }
         ]
     },
     {
         "type"          : "Member",
-        "name"          : "Jane Doe",
-        "id"            : "000000002",
-        "address"       : "123 Main St",
-        "city"          : "Somewhere",
+        "name"          : "Walter H. White",
+        "id"            : "000490662",
+        "address"       : "308 Negra Arroyo Lane",
+        "city"          : "Albuquerque",
+        "state"         : "NM",
+        "zip"           : "87104",
+        "history"       : []
+    },
+    {
+        "type"          : "Member",
+        "name"          : "Dr. Gurt",
+        "id"            : "100922000",
+        "address"       : "688 Gurt Ave",
+        "city"          : "Berlin",
+        "state"         : "GE",
+        "zip"           : "00000",
+        "history"       : []
+    },
+    {
+        "type"          : "Member",
+        "name"          : "Ma Nama Jeff",
+        "id"            : "500050009",
+        "address"       : "1234 My Addres St.",
+        "city"          : "San Diego",
         "state"         : "CA",
-        "zip"           : "90210",
+        "zip"           : "10101",
         "history"       : []
     }
 ]
