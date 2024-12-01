@@ -35,14 +35,42 @@ _M_SIZE_CONSTANTS           = {
 
 
 #                           1.2.    (S) Service Limits.
-_S_DATE_FMT                 = "MM-DD-YYYY"
-_S_PROVIDER_NAME_SIZE       = 25
-_S_SERVICE_NAME_SIZE        = 20
+#
+#   1.  Names...
+_S_NAME_SIZE                = 20                        #   Name of service.
+_S_PROVIDER_NAME_SIZE       = 25                        #   Name of Provider
+_S_PATIENT_NAME_SIZE        = 25                        #   Name of Patient (Member)
+
+#   2.  ID Numbers...
+_S_ID_SIZE                  = 6                         #   ID of service.
+_S_PROVIDER_ID_SIZE         = 9                         #   ID of Provider
+_S_PATIENT_ID_SIZE          = 9                         #   ID of Patient (Member)
+
+#   3.  Misc. Members...
+_S_FEE_SIZE                 = '3.2'                     #   $999.99.    SERVICE FEE.
+_S_COMMENTS_SIZE            = 100                       #   Comments / Notes...
+_S_DOS_FMT                  = 'MM-DD-YYYY'              #   DOS = DATE-OF-SERVICE.
+_S_DOR_FMT                  = 'MM-DD-YYYY HH:MM:SS'     #   DOR = DATE-OF-RECORD.
+
 
 _S_SIZE_CONSTANTS           = {
-    "date_fmt"      : _S_DATE_FMT,
-    "p_name"        : _S_PROVIDER_NAME_SIZE,
-    "s_name"        : _S_SERVICE_NAME_SIZE,
+    #   Names.
+    "name"                  : _S_NAME_SIZE,
+    "provider_name"         : _S_PROVIDER_NAME_SIZE,
+    "patient_name"          : _S_PATIENT_NAME_SIZE,
+    #
+    #   ID numbers.
+    "ID"                    : _S_ID_SIZE,
+    "provider_ID"           : _S_PROVIDER_ID_SIZE,
+    "patient_ID"            : _S_PATIENT_ID_SIZE,
+    #
+    #   Misc. Fields.
+    "fee"                   : _S_FEE_SIZE,
+    "min_fee"               : 000.00,
+    "max_fee"               : 999.99,
+    "comments"              : _S_COMMENTS_SIZE,
+    "dos"                   : "%d-%m-%Y",
+    "dor"                   : "%d-%m-%Y %H:%M:%S",
 }
 
 

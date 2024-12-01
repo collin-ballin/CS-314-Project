@@ -17,10 +17,10 @@
 from ._constants import _M_SIZE_CONSTANTS
 
 #   1.2.    Provider Limits.
-#from ._constants import _S_SIZE_CONSTANTS
+from ._constants import _S_SIZE_CONSTANTS
 
 #   1.3.    Service Limits.
-#from ._constants import _P_SIZE_CONSTANTS
+from ._constants import _P_SIZE_CONSTANTS
 
 
 ###############################################################################

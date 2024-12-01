@@ -12,6 +12,7 @@ from lib.utility import Cstring
 from lib.utility import ANSI
 import lib.utility as UTL
 from lib.users import Member, Provider
+from lib.services import Service
 
 import json, sys, time, traceback
 from PIL import Image
@@ -92,8 +93,18 @@ def load_users(self, file_path:str) -> tuple:
             )
             #           1.2.    Load the historical records of the member.
             for record in item.get("history", []):
-                entry = (record["date"], record["provider_name"], record["service_name"])
-                user.history.append( entry )
+                service = Service(name=record["name"],                      id=record["id"],
+                                  provider_name=record["provider_name"],    provider_id=record["provider_id"],
+                                  patient_name="Collin Bond",               patient_id="000000007",
+                                  dos=record["dos"],                        dor=record["dor"],
+                                  comments=record["comments"],              fee=record["fee"])
+                
+                user.history.append( Service(name=record["name"],           id=record["id"],
+                                     provider_name=record["provider_name"], provider_id=record["provider_id"],
+                                     patient_name=record["patient_name"],   patient_id=record["patient_id"],
+                                     dos=record["dos"],                     dor=record["dor"],
+                                     comments=record["comments"],           fee=record["fee"]) )
+                
             
             self.members.append(user)
             idx     += 1
@@ -145,7 +156,15 @@ def __post_init__(self):
         load_info       = load_users(self, file)
         
         #   1.2.    Setting UI Dimensions.
-        self.UI['in'] = { 'height' : 3, 'width' : 30 }
+        width               = 20
+        self.UI['head']     = { 'height'    : 1,            'width'         : width,
+                                'pos'       : (0,0),        'title'         : 'title' }
+                                
+        self.UI['out']      = { 'height'    : 5,            'width'         : width,
+                                'pos'       : (5,0),        'title'         : 'OUTPUT' }
+                                
+        self.UI['in']       = { 'height'    : 2,            'width'         : width,
+                                'pos'       : (15,0),       'title'         : 'INPUT' }
         
     #
     #
@@ -201,12 +220,29 @@ def setup_UI(self, stdscr):
     
     #   2.  CREATE WINDOW FOR EACH SECTION OF OUTPUT...
     #
+    #       2.2.    Program-Output Window.
+    pos                     = (self.UI['out']['pos'][0], self.UI['in']['pos'][1])
+    dims                    = (self.UI['out']['height'], self.UI['in']['width'])
+    title                   = self.UI['out']['title']
+    stdscr.addstr(pos[0], pos[1], f"{title}")
+    output_win              = curses.newwin(       dims[0],   dims[1]-2,  2+pos[0],            1+pos[1] )  # 3 lines high, below output
+    output_box              = tp.rectangle(stdscr, 1+pos[0],  pos[1],     1+dims[0]+pos[0]+1,  1+dims[1]+pos[1]+1 )
+    output_tbox             = tp.Textbox(output_win)
+    stdscr.refresh()
+    #
+    #
+    #
     #       2.3.    User-Input Window.
-    stdscr.addstr(0, 0, f"{self.prompts['i_cursor']}")
-    input_win               = curses.newwin( self.UI['in']['height'], self.UI['in']['width']-2, 2, 1)  # 3 lines high, below output
-    input_box               = tp.rectangle(stdscr, 1, 0, 1 + self.UI['in']['height'] + 1, 1 + self.UI['in']['width'] + 1)
+    pos                     = (self.UI['in']['pos'][0], self.UI['in']['pos'][1])
+    dims                    = (self.UI['in']['height'], self.UI['in']['width'])
+    title                   = self.UI['in']['title']
+    stdscr.addstr(pos[0], pos[1], f"{title}")
+    input_win               = curses.newwin(       dims[0],   dims[1]-2,  2+pos[0],            1+pos[1] )  # 3 lines high, below output
+    input_box               = tp.rectangle(stdscr, 1+pos[0],  pos[1],     1+dims[0]+pos[0]+1,  1+dims[1]+pos[1]+1 )
     input_tbox              = tp.Textbox(input_win)
     stdscr.refresh()
+    
+    
     
     
     #   3.  ASSIGNING EACH WINDOW TO DICTIONARY...
@@ -215,6 +251,9 @@ def setup_UI(self, stdscr):
     self.UI['in']['box']    = input_box
     self.UI['in']['tbox']   = input_tbox
     
+    self.UI['out']['win']   = output_win
+    self.UI['out']['box']   = output_box
+    self.UI['out']['tbox']  = output_tbox
     
     return
     
@@ -224,45 +263,83 @@ def setup_UI(self, stdscr):
 #   "main"
 #
 def main(self, stdscr):
-    #UTL.log(f"Type of \"stdscr\" = {stdscr}.", ANSI.NOTE)
     setup_UI(self, stdscr)
-    box = self.UI['in']['tbox']
+    
+    
+    #   1.  FETCH INPUT FROM USER...
+    response = get_input(self, stdscr)
 
 
-
-    while (True):
-        # Edit the box manually to capture each key press
-        key = box.win.getch()
-
-        #   CASE 1 :    "ENTER"
-        if ( (key == curses.KEY_ENTER) or (key == 10) or (key == 13) ):
-            break
-        #
-        #   CASE 2 :    "BACKSPACE"
-        elif key in (curses.KEY_BACKSPACE, 127):
-            y, x = box.win.getyx()
-            if (x > 0):#                    2.1.    Delete in the middle of the line.
-                box.win.delch(y, x - 1)
-                
-            elif (y > 0):#                    2.2.    Delete in the middle of the line.
-                box.win.delch(y-1, x)
-        #
-        #   CASE 3 :    "NORMAL CHARACTER"
-        else:
-            box.win.addch(key)
-
-
-    # Get resulting contents
-    message = box.gather()
-
-    # Display the message in the terminal (for testing)
-    stdscr.addstr(8, 0, f"Message submitted: {message}")
+    #   2.  RESET THE INPUT BOX AND DISPLAY ON OUTPUT CONSOLE...
+    self.UI['out']['win'].clear()
+    self.UI['in']['win'].clear()
+    self.UI['out']['win'].addstr(0, 0, response, curses.color_pair(2))
+    
+    
+    #   3.  REFRESH THE SCREEN...
+    self.UI['out']['win'].refresh()
+    self.UI['in']['win'].refresh()
     stdscr.refresh()
 
-    # Wait for user to see the output before exiting
+
+    #   4.  WAIT FOR ENTER-KEY BEFORE CLOSING...
     stdscr.getch()
         
     return
+    
+
+
+#   "get_input"
+#
+def get_input(self, stdscr) -> str:
+    box         = self.UI['in']['tbox']
+    xmax        = self.UI['in']['width']-3
+    ymax        = self.UI['in']['height']
+    capture     = True
+
+
+
+    #   1.  ALLOW USER TO PROVIDE INPUT...
+    while (capture):
+        key     = box.win.getch()
+        y, x    = box.win.getyx()
+
+        #   CASE 1 :    "ENTER"
+        if ( (key == curses.KEY_ENTER) or (key == 10) or (key == 13) ):
+            capture = False
+            #break
+        #
+        #   CASE 2 :    "BACKSPACE"
+        elif key in (curses.KEY_BACKSPACE, 127):
+
+            if ( (x==0) and (0 < y) ):#     2.1.    Delete at the beginning of a line (skip up to previous line).
+                box.win.move(y-1, xmax)
+                box.win.delch(y-1, xmax)
+                
+            elif (0 < x):#                  2.2.    Delete in the middle of the line.
+                box.win.delch(y, x-1)
+        #
+        #   CASE 3 :    "NORMAL CHARACTER"
+        else:
+            if ( (not (y < ymax)) and (not (x < xmax)) ):#    3.2.    At the end of input text-box.
+                pass
+            else:#                                      3.1.    Adding character normally.
+                box.win.addch(key)
+
+
+
+    #   2.  FETCHING USER'S INPUT...
+    response = box.gather()
+
+
+
+    #   3.  RESET THE INPUT BOX...
+    self.UI['out']['win'].clear()
+    self.UI['in']['win'].clear()
+    self.UI['out']['win'].refresh()
+    stdscr.refresh()
+
+    return response
     
     
     
@@ -270,7 +347,7 @@ def main(self, stdscr):
 #
 def run(self) -> int:
     status = 0
-    sys.stdout.write(f"{ANSI.ENABLE_WRAP}")
+    #sys.stdout.write(f"{ANSI.ENABLE_WRAP}")
     
     #   1.  TRY-BLOCK...
     try:

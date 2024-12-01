@@ -1,32 +1,35 @@
 [
     {
-        "type": "Member",
-        "name": "John Doe",
-        "id": "000000001",
-        "address": "123 Main St",
-        "city": "Somewhere",
-        "state": "CA",
-        "zip": "90210",
-        "history": [
+        "type"          : "Member",
+        "name"          : "John Doe",
+        "id"            : "000000001",
+        "address"       : "123 Main St",
+        "city"          : "Somewhere",
+        "state"         : "CA",
+        "zip"           : "90210",
+        "history"       : [
             {
-                "date": "01-15-2023",
-                "provider_name": "Jane Smith",
-                "service_name": "X-Ray"
-            },
-            {
-                "date": "03-20-2023",
-                "provider_name": "Alice Brown",
-                "service_name": "Check-up"
+                "name"          : "X-Ray",
+                "id"            : "000001",
+                "dos"           : "28-11-2024",
+                "dor"           : "28-11-2024 11:37:15",
+                "patient_name"  : "Collin A Bond",
+                "patient_id"    : "100000007",
+                "provider_name" : "Providence",
+                "provider_id"   : "900000001",
+                "comments"      : "900000001",
+                "fee"           : 123.12
             }
         ]
     },
     {
-        "type": "Member",
-        "name": "Jane Doe",
-        "id": "000000002",
-        "address": "123 Main St",
-        "city": "Somewhere",
-        "state": "CA",
-        "zip": "90210"
+        "type"          : "Member",
+        "name"          : "Jane Doe",
+        "id"            : "000000002",
+        "address"       : "123 Main St",
+        "city"          : "Somewhere",
+        "state"         : "CA",
+        "zip"           : "90210",
+        "history"       : []
     }
 ]
