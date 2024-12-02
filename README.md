@@ -13,3 +13,6 @@ psql -U dev -d choco -f database/schema/database_schema.sql
 
 ## Install Libraries:
 psycopg2
+
+## Install Database:
+postgress
