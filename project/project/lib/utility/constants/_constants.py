@@ -8,6 +8,7 @@
 #                 File:         "_constants.py".
 #
 ###############################################################################
+import curses
 
 
 
@@ -91,6 +92,148 @@ _P_SIZE_CONSTANTS           = {
     "state"         : _P_STATE_SIZE,
     "zip"           : _P_ZIP_SIZE,
 }
+
+
+###############################################################################
+###############################################################################
+#
+#
+#
+#
+#
+#
+#   2.  CONSTANTS FOR THE "APPLICATION" CLASS...
+###############################################################################
+###############################################################################
+#
+#
+#
+#   2.1.    DEFAULT PROMPTS AND MESSAGES...
+###############################################################################
+_LW         = 87
+_PROMPTS    = {
+    #   Utility Text...
+    #   ...
+    #
+    #   Prompts / Output...
+    "provider_1"        : f"Please enter your 9-digit provider ID number: ",
+    #
+    #
+    #   Command Prompts...
+    "cmd_unknown"       : "The command \"{a}\" is unrecognized.",
+    "cmd_suggestion"    : "Perhaps you meant \"{a}\"?",
+    #
+    #
+    #   Instructions / Info...
+    "display_mode_ON"   : "DISPLAY MODE:  Use arrow-keys to cycle forward/backward through entries.  Press \"q\" to exit.",
+    "display_mode_OFF"  : "Exiting Display Mode...",
+    #
+    #
+    #   Exception Handling / Termination...
+    "not_impl"          : "The command \"{a}\" is not implemented yet",
+    "normal_exit"       : "Program terminating...  Have a great day!",
+}
+
+
+###############################################################################
+#
+#
+#
+#   2.2.    ACCEPTED COMMANDS FOR THE APPLICATION...
+###############################################################################
+###############################################################################
+_COMMANDS    = {
+    #
+    #   1.  OPERATION COMMANDS...
+    ###########################################################################
+    #
+    #       1.1.    MEMBER COMMANDS:
+    "add member"            : {     "reply"     : "...",
+                                    "action"    : None,
+                              },
+    "edit member"           : {     "reply"     : "...",
+                                    "action"    : None,
+                              },
+    "remove member"         : {     "reply"     : "...",
+                                    "action"    : None,
+                              },
+    "display members"       : {    "reply"     : "Displaying the members...",
+                                    "action"    : None,
+                              },
+    #
+    #
+    #       1.2.    PROVIDER COMMANDS:
+    "add provider"          : {     "reply"     : "...",
+                                    "action"    : None,
+                              },
+    "edit provider"         : {     "reply"     : "...",
+                                    "action"    : None,
+                              },
+    "remove provider"       : {     "reply"     : "...",
+                                    "action"    : None,
+                              },
+    "display providers"     : {     "reply"     : "Displaying the providers...",
+                                    "action"    : None,
+                              },
+    #
+    #
+    #       1.3.    SERVICE COMMANDS:
+    "add service"           : {     "reply"     : "...",
+                                    "action"    : None,
+                              },
+    "edit service"          : {     "reply"     : "...",
+                                    "action"    : None,
+                              },
+    "remove service"        : {     "reply"     : "...",
+                                    "action"    : None,
+                              },
+    "display services"      : {     "reply"     : "...",
+                                    "action"    : None,
+                              },
+    ###########################################################################
+    #
+    #
+    #
+    #   2.  UTILITY COMMANDS...
+    ###########################################################################
+    "test"                  : {     "reply"     : "Placeholder..,",
+                                    "action"    : None,
+                              },
+    "set title"             : {     "reply"     : "Setting the application title..,",
+                                    "action"    : None,
+                              },
+    ###########################################################################
+}
+###############################################################################
+###############################################################################
+
+
+
+###############################################################################
+#
+#
+#
+#   2.2.    ACCEPTED COMMANDS FOR THE APPLICATION.
+###############################################################################
+_UI         = {
+    #   General Constant Values...
+    "fg"                    : curses.COLOR_WHITE,
+    #
+    #   Constants for Title...
+    "title_offset"          : 2,
+    "title_padding"         : 1,
+}
+
+
+###############################################################################
+###############################################################################
+
+
+
+
+
+
+
 
 
 

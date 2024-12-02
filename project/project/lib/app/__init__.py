@@ -30,6 +30,7 @@ class App:
 	from ._app import __post_init__
 	from ._app import main
 	from ._app import run
+	from ._app import spell_check
  
  
 	################################################################
@@ -52,15 +53,19 @@ class App:
                                             init=False,             compare=True,
                                             hash=True,              repr=True)
                                             
-	UI: 	        dict		    = field(default_factory=dict,
-                                            init=False,             compare=False,
-                                            hash=False,             repr=False)
-                                            
-	pos: 	        dict		    = field(default_factory=dict,
-                                            init=False,             compare=False,
-                                            hash=False,             repr=False)
-                                            
 	prompts: 	    dict		    = field(default_factory=dict,
+                                            init=False,             compare=False,
+                                            hash=False,             repr=False)
+                                            
+	commands: 	    dict		    = field(default_factory=dict,
+                                            init=False,             compare=False,
+                                            hash=False,             repr=False)
+                                            
+	command_keys:   list		    = field(default_factory=list,
+                                            init=False,             compare=False,
+                                            hash=False,             repr=False)
+                                            
+	UI: 	        dict		    = field(default_factory=dict,
                                             init=False,             compare=False,
                                             hash=False,             repr=False)
   

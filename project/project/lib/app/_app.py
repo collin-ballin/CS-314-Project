@@ -9,48 +9,18 @@
 from dataclasses import dataclass, field
 import numpy as np
 from lib.utility import Cstring
+from lib.utility.constants import _LW, _PROMPTS, _COMMANDS, _UI
 from lib.utility import ANSI
 import lib.utility as UTL
 from lib.users import Member, Provider
 from lib.services import Service
 
-import json, sys, time, traceback
+import json, sys, time, traceback, textwrap, difflib
 from PIL import Image
 import curses
 import curses.textpad as tp
 
 
-
-
-
-
-#   CONSTANTS / MISC.
-###############################################################################
-###############################################################################
-
-_LW         = 87
-_PROMPTS    = {
-    #   Utility Texts...
-    "tc"                : f"{ANSI.GREEN_BRIGHT}",   #   'tc'    = terminal color (color for output of program).
-    "header"            : "WELCOME TO THE \"CHOCOHOLICS ANONYMOUS\" HEALTHCARE DATABASE MANAGMENT SYSTEM!",
-    "line"              : f"{ANSI.WHITE_BB}" + _LW * '═' + f"{ANSI.RESET}",
-    "o_cursor"          : f"█ ",
-    "i_cursor"          : f"INPUT ",
-    #
-    #
-    #   Prompts / Output...
-    "provider_1"        : f"Please enter your 9-digit provider ID number: ",
-    "t_cursor"          : f"",
-    #
-    #
-    #   Instructions / Info...
-    "display_mode_ON"   : "DISPLAY MODE:  Use arrow-keys to cycle forward/backward through entries.  Press \"q\" to exit.",
-    "display_mode_OFF"  : "Exiting Display Mode...",
-    #
-    #
-    #   Exception Handling / Termination...
-    "normal_exit"       : "Program terminating.  Have a great day!",
-}
 
 
 ###############################################################################
@@ -64,23 +34,78 @@ _PROMPTS    = {
 ###############################################################################
 ###############################################################################
 
-
 #   "draw_window"
 #
-def draw_window(stdscr, dims:tuple, pos:tuple, text=None, title_color=None,
-                title_offset:int=2, title_padding:int=1, subwindow:bool=False):
+def draw_window(stdscr, dims:tuple, pos:tuple, text:str='', subwindow:bool=False, title_color=_UI['fg'],
+                title_offset:int=_UI['title_offset'], title_padding:int=_UI['title_padding']):
     w, h    = dims
     x, y    = pos
     window  = stdscr.subwin(w, h,  x+1, y+1) if (subwindow) else curses.newwin(w, h,  x+1, y+1)
     box     = tp.rectangle(stdscr, x, y, 1+w+1+x, 1+h+1+y )
     
-    if (text is not None):
-        if (title_color is not None):
-            stdscr.addstr(x, y+title_offset, f"{' '*title_padding}{text}{' '*title_padding}", title_color)
-        else:
-            stdscr.addstr(x, y+title_offset, f"{' '*title_padding}{text}{' '*title_padding}", curses.COLOR_WHITE|curses.A_BOLD)
-        
+    stdscr.addstr(x, y+title_offset, f"{' '*title_padding}{text}{' '*title_padding}", title_color)
+  
     return (window, box)
+    
+    
+    
+#   "set_window_title"
+#
+def set_title(win, text:str, title_color=_UI['fg'],
+              title_offset:int=_UI['title_offset'], title_padding:int=_UI['title_padding']):
+              
+    y, x    = win.getbegyx()
+    h, w    = win.getmaxyx()
+    stdscr.addstr(x, y+title_offset, f"{' '*title_padding}{text}{' '*title_padding}", title_color)
+    
+    return
+    
+    
+    
+    
+#   "_not_implemented"
+#
+def _not_implemented(self):
+    raise NotImplementedError()
+    return
+    
+    
+    
+#   "_assign_commands"
+#
+def _assign_commands(self):
+    textwrap.dedent(f"""A helper function that assigns a \"function-pointer\" to each command that the application
+    recognizes.  We need to do this here instead of inside the \"lib/utility/constants/_constants.py\" file 
+    because certain actions depend on private/local functions that are defined only inside THIS file and
+    should not be imported to other modules.""")
+
+    #   1.  OPERATION COMMANDS...
+    #
+    #       1.1.    MEMBER COMMANDS...
+    self.commands["add member"]["action"]           = _not_implemented
+    self.commands["edit member"]["action"]          = _not_implemented
+    self.commands["remove member"]["action"]        = _not_implemented
+    self.commands["display members"]["action"]      = display_members
+    #
+    #       1.2.    PROVIDER COMMANDS...
+    self.commands["add provider"]["action"]         = _not_implemented
+    self.commands["edit provider"]["action"]        = _not_implemented
+    self.commands["remove provider"]["action"]      = _not_implemented
+    self.commands["display providers"]["action"]    = _not_implemented
+    #
+    #       1.3.    SERVICE COMMANDS...
+    self.commands["add service"]["action"]          = _not_implemented
+    self.commands["edit service"]["action"]         = _not_implemented
+    self.commands["remove service"]["action"]       = _not_implemented
+    self.commands["display services"]["action"]     = _not_implemented
+    
+    
+    #   2.  UTILITY COMMANDS...
+    self.commands["add service"]["action"]          = _not_implemented
+    
+    
+    self.command_keys                               = list( self.commands.keys() )
+    return
     
     
 ###############################################################################
@@ -111,32 +136,8 @@ def __post_init__(self):
     
     #   1.  TRY-BLOCK...
     try:
-        #   1.1.    Assigning Positions.
-        home            = ANSI.get_cursor_pos()
-        self.pos        = {
-            "home"  : home,
-            "out1"  : (home[0]+3, 0),
-            "out2"  : (home[0]+4, 0),
-            "out3"  : (home[0]+5, 0),
-            "line"  : (home[0]+6, 0),
-            "in"    : (home[0]+7, 8),
-            "last"  : (home[0]+8, 0),
-            "end"   : (home[0]+9, 0),
-        }
-        self.prompts    = _PROMPTS
+        #   1.1.    Loading User Data (Members and Providers)...
         load_info       = load_users(self, file)
-        
-        #   1.2.    Setting UI Dimensions.
-        width               = 80
-        self.UI['head']     = {
-            'height'    : 1,            'width'         : width,
-            'pos'       : (0,0),        'title'         : 'COCOA (THE CHOC-AN ORGANIZATION AND CLINICAL OPERATIONS APPLICATION)' }
-                                
-        self.UI['out']      = { 'height'    : 15,           'width'         : width,
-                                'pos'       : (5,0),        'title'         : 'OUTPUT' }
-                                
-        self.UI['in']       = { 'height'    : 1,            'width'         : width,
-                                'pos'       : (25,3),       'title'         : 'INPUT' }
         
     #
     #
@@ -160,6 +161,27 @@ def __post_init__(self):
     #   3.  FINALLY-BLOCK...
     finally:
         UTL.log(f"Loaded {load_info[0]} total items from file \"{file}\": {load_info[1]} Members and {load_info[2]} Providers.")
+        
+        #   3.1.    Initializing Prompts.
+        self.prompts    = _PROMPTS
+        
+        
+        #   3.2.    Initializing Commands (Assign the function 'pointers').
+        self.commands    = _COMMANDS
+        _assign_commands(self)
+        
+        
+        #   3.3.    Initializing UI Dimensions.
+        width               = 80
+        self.UI['head']     = {
+            'height'    : 1,            'width'         : width,
+            'pos'       : (0,0),        'title'         : 'COCOA (THE CHOC-AN ORGANIZATION AND CLINICAL OPERATIONS APPLICATION)' }
+        
+        self.UI['out']      = { 'height'        : 15,           'width'         : width,
+                                'pos'           : (5,0),        'title'         : 'OUTPUT' }
+                                
+        self.UI['in']       = { 'height'        : 1,            'width'         : width,
+                                'pos'           : (25,3),       'title'         : 'INPUT' }
         
     
     return
@@ -228,25 +250,26 @@ def setup_UI(self):
     #   0.  INITIALIZE ELEMENTS OF UI...
     #       0.1.    Colors.
     curses.start_color()
-    curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)         #   Header Text.
-    curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)         #   Output Text.
-    curses.init_pair(3, curses.COLOR_RED,   curses.COLOR_BLACK)         #   Input Text.
+    curses.init_pair(1, curses.COLOR_WHITE,     curses.COLOR_BLACK)         #   Normal Text.
+    curses.init_pair(2, curses.COLOR_GREEN,     curses.COLOR_BLACK)         #   Output Text.
+    curses.init_pair(3, curses.COLOR_RED,       curses.COLOR_BLACK)         #   Input Text.
+    curses.init_pair(4, curses.COLOR_BLACK,     curses.COLOR_WHITE)         #   HEADER TEXT...
     #
     #       0.2.    Initial Commands.
-    stdscr.clear()                                                      #   Clear the screen
+    stdscr.clear()                                                          #   Clear the screen
     #
     #       0.3.    Initial Values.
-    #curses.curs_set(0)                                                 #   ANSI.HIDE
-    curses.noecho()                                                     #   Disable real-time printing of input to screen.
-    _H, _W                        = stdscr.getmaxyx()                     #   Screen Dimensions.
+    #curses.curs_set(0)                                                     #   ANSI.HIDE
+    curses.noecho()                                                         #   Disable real-time printing of input to screen.
+    _H, _W                        = stdscr.getmaxyx()                       #   Screen Dimensions.
     h = _H-3; w = _W-4;
     height                      = h
     width                       = w
     self.UI['global']           = { 'height':height, 'width':width }
-    
-    
     self.UI['head']['height']   = h
     self.UI['head']['width']    = w
+    self.UI['hl_fmt']           = curses.color_pair(4)
+    self.UI['hlbf_fmt']         = curses.color_pair(4)|curses.A_BOLD
     
     self.UI['in']['width']      = width-6
     self.UI['out']['width']     = width-6
@@ -259,7 +282,7 @@ def setup_UI(self):
     dims                    = (self.UI['head']['height'], self.UI['in']['width'])
     title                   = self.UI['head']['title']
     head_win, head_box      = draw_window( stdscr, (h, w), (0,0), subwindow=True, text=title,
-                                           title_padding=2, title_color=curses.color_pair(1)|curses.A_BOLD )
+                                           title_color=curses.color_pair(1) )
     #
     #
     #       2.2.    Program-Output Window.
@@ -348,34 +371,48 @@ def run(self) -> int:
 #   "main"
 #
 def main(self, stdscr):
-    run = True
+    run         = True
     self.stdscr = stdscr
-    
     setup_UI(self)
     
-    
-    menu        = ["display members", "display providers"]
-    
-    orders      = {
-        "display members"       : {
-                                        "response" : "Displaying the members..."
-                                  },
-    #
-        "display providers"     : {
-                                        "response" : "Displaying the providers..."
-                                  },
-    }
     
     #   MAIN PROGRAM LOOP...
     while(run):
         #   1.1.    FETCH INPUT FROM USER...
-        response = get_input(self, stdscr)
-        set_output(self, response, clear=True)
+        input = get_input(self, stdscr)
+        set_output(self, input, clear=True)
         
-        if (response in menu):
-            set_output(self, f"I recognize the option \"{response}\":\n{orders[response]}", clear=True)
+        #   CASE 1 :    RECOGNIZED COMMAND...
+        if (input in self.commands):
+            task = self.commands[input]
+            set_output(self, f"I recognize the option \"{input}\":\n{task['reply']}", clear=True)
+            
+            #   Invoking the action for this command (if it exists).
+            if ('action' in task):
+            #
+                try:                                    #   TRY-BLOCK...
+                    task['action'](self)
+                #
+                #
+                except NotImplementedError as e:        #   CATCH-BLOCK...
+                    set_output(self, self.prompts['not_impl'].format(a=UTL.truncate(input, 24) ), clear=True)
+                #
+                #
+                finally:                                #   FINALLY...
+                    pass
+                
+        #
+        #
+        #   CASE 2 :    UNRECOGNIZE / UNKNOWN COMMAND...
         else:
-            set_output(self, f"I'm sorry, I don't recognize the command \"{response}\".", clear=True)
+            suggestions = self.spell_check(input)
+            set_output(self, self.prompts['cmd_unknown'].format(a=UTL.truncate(input, 24) ), clear=True)
+            
+            if (suggestions):
+                set_output(self, f"\n{suggestions}" )
+                #set_output(self, self.prompts['cmd_suggestion'].format(a=UTL.truncate(suggestions[0], 24) ))
+            
+            
         
     
     
@@ -385,7 +422,7 @@ def main(self, stdscr):
     #   2.  RESET THE INPUT BOX AND DISPLAY ON OUTPUT CONSOLE...
     self.UI['out']['win'].clear()
     self.UI['in']['win'].clear()
-    self.UI['out']['win'].addstr(0, 0, response, curses.color_pair(2))
+    self.UI['out']['win'].addstr(0, 0, input, curses.color_pair(2))
     
     
     #   3.  REFRESH THE SCREEN...
@@ -429,11 +466,11 @@ def display_members(self, stdscr):
     curses.curs_set(0)
 
     #   "get_entry"
-    def get_entry(x:int, y:int) -> tuple:
+    def get_entry(x:int, y:int, N0:int=N1) -> tuple:
         N       = len( self.members[x].history )
-        head_1  = f"PATIENT #{x+1}"
+        head_1  = f"PATIENT #{x+1} OF {N0}:"
         body_1  = f"{self.members[x]}"
-        head_2  = f"RECORD #{y+1}" if (N > 0) else f"NO RECORD OF PRIOR HEALTHCARE SERVICE"
+        head_2  = f"RECORD #{y+1} OF {N}:" if (N > 0) else f"NO RECORD OF PRIOR HEALTHCARE SERVICE"
         body_2  = f"{self.members[x].history[y]}" if (N > 0) else ''
         
         return ( (head_1, body_1), (head_2, body_2) )
@@ -498,9 +535,9 @@ def display_members(self, stdscr):
         
     #   3.  CLEANING THE SCREEN.  DISPLAYING EXIT MESSAGE...
     self.UI['in']['win'].clear()
-    self.UI['out']['win'].clear()
+    #self.UI['out']['win'].clear()
     self.UI['in']['win'].addstr(0, 0, self.prompts['display_mode_OFF'], curses.color_pair(3)|curses.A_STANDOUT)
-    self.UI['out']['win'].refresh()
+    #self.UI['out']['win'].refresh()
     self.UI['in']['win'].refresh()
     
     return
@@ -569,8 +606,30 @@ def set_output(self, text:str, pos:tuple=(0,0), clear:bool=False, attribute=None
         self.UI['out']['win'].addstr(pos[0], pos[1], text, curses.color_pair(2)|attribute)
         
     self.UI['out']['win'].refresh()
-    self.stdscr.refresh()
     return
+    
+ 
+ 
+#   "print_scr"
+#
+def print_scr(self, text:str, pos:tuple=(0,0), clear:bool=False, attribute=None) -> None:
+    if (clear):
+        self.UI['out']['win'].clear()
+    
+    if (attribute is None):
+        self.UI['out']['win'].addstr(pos[0], pos[1], text, curses.color_pair(2))
+    else:
+        self.UI['out']['win'].addstr(pos[0], pos[1], text, curses.color_pair(2)|attribute)
+        
+    self.UI['out']['win'].refresh()
+    return
+    
+
+
+#   "spell_check"
+#
+def spell_check(self, input:str, n:int=1, cutoff:float=0.6):
+    return difflib.get_close_matches( input, self.command_keys, n=n, cutoff=cutoff )
     
     
 ###############################################################################

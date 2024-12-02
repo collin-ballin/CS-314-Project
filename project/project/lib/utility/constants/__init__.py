@@ -23,6 +23,11 @@ from ._constants import _S_SIZE_CONSTANTS
 from ._constants import _P_SIZE_CONSTANTS
 
 
+#   2.1.    CONSTANTS FOR "APP" CLASS...
+from ._constants import _LW
+from ._constants import _PROMPTS, _COMMANDS, _UI
+
+
 ###############################################################################
 #   END OF "...".
 #
