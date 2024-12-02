@@ -55,12 +55,36 @@ _PROMPTS    = {
 
 ###############################################################################
 ###############################################################################
+#
+#
+#
+#
+#
+#   UTILITY FUNCTIONS...
+###############################################################################
+###############################################################################
 
 
+#   "draw_window"
+#
+def draw_window(stdscr, dims:tuple, pos:tuple, text=None, title_color=None,
+                title_offset:int=2, title_padding:int=1, subwindow:bool=False):
+    w, h    = dims
+    x, y    = pos
+    window  = stdscr.subwin(w, h,  x+1, y+1) if (subwindow) else curses.newwin(w, h,  x+1, y+1)
+    box     = tp.rectangle(stdscr, x, y, 1+w+1+x, 1+h+1+y )
+    
+    if (text is not None):
+        if (title_color is not None):
+            stdscr.addstr(x, y+title_offset, f"{' '*title_padding}{text}{' '*title_padding}", title_color)
+        else:
+            stdscr.addstr(x, y+title_offset, f"{' '*title_padding}{text}{' '*title_padding}", curses.COLOR_WHITE|curses.A_BOLD)
+        
+    return (window, box)
     
     
-    
-    
+###############################################################################
+###############################################################################
     
 
 
@@ -106,13 +130,13 @@ def __post_init__(self):
         width               = 80
         self.UI['head']     = {
             'height'    : 1,            'width'         : width,
-            'pos'       : (0,0),        'title'         : 'WELCOME TO COCOA! (The ChocAn Organization and Clinical Operations Application)' }
+            'pos'       : (0,0),        'title'         : 'COCOA (THE CHOC-AN ORGANIZATION AND CLINICAL OPERATIONS APPLICATION)' }
                                 
         self.UI['out']      = { 'height'    : 15,           'width'         : width,
                                 'pos'       : (5,0),        'title'         : 'OUTPUT' }
                                 
         self.UI['in']       = { 'height'    : 1,            'width'         : width,
-                                'pos'       : (25,0),       'title'         : 'INPUT' }
+                                'pos'       : (25,3),       'title'         : 'INPUT' }
         
     #
     #
@@ -206,7 +230,7 @@ def setup_UI(self):
     curses.start_color()
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)         #   Header Text.
     curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)         #   Output Text.
-    curses.init_pair(3, curses.COLOR_RED, curses.COLOR_BLACK)           #   Input Text.
+    curses.init_pair(3, curses.COLOR_RED,   curses.COLOR_BLACK)         #   Input Text.
     #
     #       0.2.    Initial Commands.
     stdscr.clear()                                                      #   Clear the screen
@@ -214,10 +238,18 @@ def setup_UI(self):
     #       0.3.    Initial Values.
     #curses.curs_set(0)                                                 #   ANSI.HIDE
     curses.noecho()                                                     #   Disable real-time printing of input to screen.
-    height, width               = stdscr.getmaxyx()                     #   Screen Dimensions.
+    _H, _W                        = stdscr.getmaxyx()                     #   Screen Dimensions.
+    h = _H-3; w = _W-4;
+    height                      = h
+    width                       = w
     self.UI['global']           = { 'height':height, 'width':width }
-    self.UI['in']['width']      = width-3
-    self.UI['out']['width']     = width-3
+    
+    
+    self.UI['head']['height']   = h
+    self.UI['head']['width']    = w
+    
+    self.UI['in']['width']      = width-6
+    self.UI['out']['width']     = width-6
     
     
     #   2.  CREATE WINDOW FOR EACH SECTION OF PROGRAM...
@@ -226,40 +258,32 @@ def setup_UI(self):
     pos                     = (self.UI['head']['pos'][0], self.UI['in']['pos'][1])
     dims                    = (self.UI['head']['height'], self.UI['in']['width'])
     title                   = self.UI['head']['title']
-    head_win                = curses.newwin(       dims[0],   dims[1]-2,  2+pos[0],            1+pos[1] )  # 3 lines high, below output
-    head_box                = tp.rectangle(stdscr, 1+pos[0],  pos[1],     1+dims[0]+pos[0]+1,  1+dims[1]+pos[1]+1 )
-    head_tbox               = tp.Textbox(head_win)
-    head_win.addstr(pos[0], pos[1], title, curses.color_pair(1)|curses.A_BOLD)
-    stdscr.refresh()
+    head_win, head_box      = draw_window( stdscr, (h, w), (0,0), subwindow=True, text=title,
+                                           title_padding=2, title_color=curses.color_pair(1)|curses.A_BOLD )
     #
     #
     #       2.2.    Program-Output Window.
     pos                     = (self.UI['out']['pos'][0], self.UI['in']['pos'][1])
     dims                    = (self.UI['out']['height'], self.UI['in']['width'])
     title                   = self.UI['out']['title']
-    stdscr.addstr(pos[0], pos[1], title, curses.color_pair(2)|curses.A_BOLD)
-    output_win              = curses.newwin(       dims[0],   dims[1]-2,  2+pos[0],            1+pos[1] )  # 3 lines high, below output
-    output_box              = tp.rectangle(stdscr, 1+pos[0],  pos[1],     1+dims[0]+pos[0]+1,  1+dims[1]+pos[1]+1 )
+    output_win, output_box  = draw_window( stdscr, dims, pos, text=title,
+                                           title_color=curses.color_pair(2)|curses.A_BOLD )
     output_tbox             = tp.Textbox(output_win)
-    stdscr.refresh()
     #
     #
     #       2.3.    User-Input Window.
     pos                     = (self.UI['in']['pos'][0], self.UI['in']['pos'][1])
     dims                    = (self.UI['in']['height'], self.UI['in']['width'])
     title                   = self.UI['in']['title']
-    stdscr.addstr(pos[0], pos[1], title, curses.color_pair(3)|curses.A_BOLD)
-    input_win               = curses.newwin(       dims[0],   dims[1]-2,  2+pos[0],            1+pos[1] )  # 3 lines high, below output
-    input_box               = tp.rectangle(stdscr, 1+pos[0],  pos[1],     1+dims[0]+pos[0]+1,  1+dims[1]+pos[1]+1 )
+    input_win, input_box    = draw_window( stdscr, dims, pos, text=title,
+                                           title_color=curses.color_pair(3)|curses.A_BOLD )
     input_tbox              = tp.Textbox(input_win)
-    stdscr.refresh()
     
     
     #   3.  ASSIGNING EACH WINDOW TO DICTIONARY...
     #
     self.UI['head']['win']      = head_win
     self.UI['head']['box']      = head_box
-    self.UI['head']['tbox']     = head_tbox
     
     self.UI['in']['win']        = input_win
     self.UI['in']['box']        = input_box
@@ -271,9 +295,11 @@ def setup_UI(self):
     
     
     curses.curs_set(0)
+    stdscr.refresh()
     self.UI['head']['win'].refresh()
     self.UI['out']['win'].refresh()
     self.UI['in']['win'].refresh()
+    self.UI['in']['win'].clear()
     
     return
     
@@ -325,18 +351,31 @@ def main(self, stdscr):
     run = True
     self.stdscr = stdscr
     
-    
     setup_UI(self)
     
+    
+    menu        = ["display members", "display providers"]
+    
+    orders      = {
+        "display members"       : {
+                                        "response" : "Displaying the members..."
+                                  },
+    #
+        "display providers"     : {
+                                        "response" : "Displaying the providers..."
+                                  },
+    }
     
     #   MAIN PROGRAM LOOP...
     while(run):
         #   1.1.    FETCH INPUT FROM USER...
         response = get_input(self, stdscr)
-        set_output(self, response)
+        set_output(self, response, clear=True)
         
-        if (response == 'a'):
-            set_output(self, response)
+        if (response in menu):
+            set_output(self, f"I recognize the option \"{response}\":\n{orders[response]}", clear=True)
+        else:
+            set_output(self, f"I'm sorry, I don't recognize the command \"{response}\".", clear=True)
         
     
     
@@ -485,7 +524,7 @@ def get_input(self, stdscr) -> str:
 
         #   CASE 1 :    "ENTER"
         if ( (key == curses.KEY_ENTER) or (key == 10) or (key == 13) ):
-            box.win.move(0, 0)
+            #curses.curs_set(0)
             capture = False
         #
         #   CASE 2 :    "BACKSPACE"
@@ -514,15 +553,13 @@ def get_input(self, stdscr) -> str:
     self.UI['in']['win'].refresh()
     stdscr.refresh()
 
-    return response
+    return response.rstrip()
     
  
  
 #   "set_output"
 #
 def set_output(self, text:str, pos:tuple=(0,0), clear:bool=False, attribute=None) -> None:
-
-    if (
     if (clear):
         self.UI['out']['win'].clear()
     

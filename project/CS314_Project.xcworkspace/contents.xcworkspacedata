@@ -13,6 +13,9 @@
       <FileRef
          location = "group:test.py">
       </FileRef>
+      <FileRef
+         location = "group:subwindow.py">
+      </FileRef>
       <Group
          location = "group:lib"
          name = "lib">
