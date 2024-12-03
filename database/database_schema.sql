@@ -109,6 +109,36 @@ CREATE TABLE public.services (
 ALTER TABLE public.services OWNER TO postgres;
 
 --
+-- Name: weekly_provider_reports; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.weekly_provider_reports (
+    report_id serial PRIMARY KEY,  -- Automatically generates a unique report ID
+    provider_id character(9) NOT NULL,  -- Foreign key to providers table
+    week_end_date date NOT NULL,  -- The week end date for the report
+    total_consultations integer CHECK (total_consultations <= 999),  -- Total consultations (3 digits)
+    total_fees numeric(8,2) CHECK (total_fees <= 99999.99),  -- Total fees (up to $99,999.99)
+    CONSTRAINT weekly_provider_reports_provider_id_fkey FOREIGN KEY (provider_id)
+        REFERENCES public.providers(provider_id) ON DELETE CASCADE  -- Foreign key referencing providers table
+);
+
+
+ALTER TABLE public.weekly_provider_reports OWNER TO postgres;
+--
+-- Name: eft_records; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.eft_records (
+    transaction_id serial PRIMARY KEY,  -- Automatically generates a unique transaction ID
+    provider_id character(9) NOT NULL,  -- Foreign key to providers table
+    amount numeric(10,2) NOT NULL CHECK (amount <= 999999.99),  -- Amount (up to $999,999.99)
+    transfer_date date NOT NULL,  -- The date of the transfer
+    CONSTRAINT eft_records_provider_id_fkey FOREIGN KEY (provider_id)
+        REFERENCES public.providers(provider_id) ON DELETE CASCADE  -- Foreign key referencing providers table
+);
+
+ALTER TABLE public.eft_records OWNER TO postgres;
+--
 -- Name: service_records record_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -191,14 +221,11 @@ GRANT ALL ON TABLE public.members TO dev;
 
 GRANT ALL ON TABLE public.providers TO dev;
 
-
 --
--- Name: TABLE service_records; Type: ACL; Schema: public; Owner: postgres
+-- Name: TABLE eft_records; Type: ACL; Schema: public; Owner: postgres
 --
 
-GRANT ALL ON TABLE public.service_records TO dev;
-
-
+GRANT ALL ON TABLE public.weekly_provider_reports TO dev;
 --
 -- Name: SEQUENCE service_records_record_id_seq; Type: ACL; Schema: public; Owner: postgres
 --
@@ -212,6 +239,18 @@ GRANT SELECT,USAGE ON SEQUENCE public.service_records_record_id_seq TO dev;
 
 GRANT ALL ON TABLE public.services TO dev;
 
+
+--
+-- Name: TABLE service_records; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON TABLE public.service_records TO dev;
+
+--
+-- Name: TABLE weekly_provider_reports; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON TABLE public.eft_records TO dev;
 
 --
 -- PostgreSQL database dump complete
