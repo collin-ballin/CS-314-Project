@@ -24,7 +24,7 @@ from lib.users.member import Member
 
 
 #   1.3.    PROVIDER.
-#import lib.users.provider
+from lib.users.provider import Provider
 
 
 

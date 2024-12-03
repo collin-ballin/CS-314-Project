@@ -1,19 +1,72 @@
-###############################################################################
-#
-#       ************************************************************
-#       ****       _ S E R V I C E S . P Y  ____  F I L E.      ****
-#       ************************************************************
-#
-#
-###############################################################################
 from dataclasses import dataclass, field
 import math, textwrap
 import datetime as dt
 
-from lib.utility import ANSI
-import lib.utility as UTL
-from lib.utility import Cstring
-from lib.utility.constants import _S_SIZE_CONSTANTS
+
+def truncate(text, size:int) -> str:
+    return text if len(text) <= size else text[:size - 3] + "..."
+    
+
+
+
+RESET               = "\033[0m"
+BLACK_BRIGHT        = "\033[90m"
+RED_BRIGHT          = "\033[91m"
+GREEN_BRIGHT        = "\033[92m"
+YELLOW_BRIGHT       = "\033[93m"
+BLUE_BRIGHT         = "\033[94m"
+MAGENTA_BRIGHT      = "\033[95m"
+CYAN_BRIGHT         = "\033[96m"
+WHITE_BRIGHT        = "\033[97m"
+BLACK_BB            = "\033[1m\033[90m"
+RED_BB              = "\033[1m\033[91m"
+GREEN_BB            = "\033[1m\033[92m"
+YELLOW_BB           = "\033[1m\033[93m"
+BLUE_BB             = "\033[1m\033[94m"
+MAGENTA_BB          = "\033[1m\033[95m"
+CYAN_BB             = "\033[1m\033[96m"
+WHITE_BB            = "\033[1m\033[97m"
+
+
+
+#   1.  Names...
+_S_NAME_SIZE                = 25                        #   Name of service.
+_S_PROVIDER_NAME_SIZE       = 25                        #   Name of Provider
+_S_PATIENT_NAME_SIZE        = 25                        #   Name of Patient (Member)
+
+#   2.  ID Numbers...
+_S_ID_SIZE                  = 6                         #   ID of service.
+_S_PROVIDER_ID_SIZE         = 9                         #   ID of Provider
+_S_PATIENT_ID_SIZE          = 9                         #   ID of Patient (Member)
+
+
+#   3.  Misc. Members...
+_S_FEE_SIZE                 = '3.2'                     #   $999.99.    SERVICE FEE.
+_S_COMMENTS_SIZE            = 100                       #   Comments / Notes...
+_S_DOS_FMT                  = 'MM-DD-YYYY'              #   DOS = DATE-OF-SERVICE.
+_S_DOR_FMT                  = 'MM-DD-YYYY HH:MM:SS'     #   DOR = DATE-OF-RECORD.
+
+
+
+_S_SIZE_CONSTANTS           = {
+    #   Names.
+    "name"                  : _S_NAME_SIZE,
+    "provider_name"         : _S_PROVIDER_NAME_SIZE,
+    "patient_name"          : _S_PATIENT_NAME_SIZE,
+    #
+    #   ID numbers.
+    "ID"                    : _S_ID_SIZE,
+    "provider_ID"           : _S_PROVIDER_ID_SIZE,
+    "patient_ID"            : _S_PATIENT_ID_SIZE,
+    #
+    #   Misc. Fields.
+    "fee"                   : _S_FEE_SIZE,
+    "min_fee"               : 000.00,
+    "max_fee"               : 999.99,
+    "comments"              : _S_COMMENTS_SIZE,
+    "dos"                   : "%d-%m-%Y",
+    "dor"                   : "%d-%m-%Y %H:%M:%S",
+}
 
 
 
@@ -86,7 +139,7 @@ class Service:
     #
     def __str__(self) -> str:
         w1      = 22
-        w2      = 45
+        w2      = 35
         s       = 7
         sep     = s * '.'
         pre     = w1 + s + 2
@@ -122,6 +175,13 @@ class Service:
         
         #   7.  Fee.
         string += f"\n{'Amount Due':>{w1}} {sep} ${self.fee:06.2f}" if (self.fee is not None) else ''
+        
+        
+        
+        
+        #sys.stdout.write(textwrap.dedent(f"""{ANSI.DIM}
+        #{'OS NAME':>{w1}} {sep} {os.name:<{w2}}
+        #{'SYSTEM PLATFORM':>{w1}} {sep} {sys.platform:<{w2}}
     
         return string
     
@@ -162,7 +222,7 @@ class Service:
             #
             #   CASE 1.5. :     Truncate each other field...
             else:
-                value_fmt = UTL.truncate(value, size=_S_SIZE_CONSTANTS[attr]).title()
+                value_fmt = truncate(value, size=_S_SIZE_CONSTANTS[attr]).title()
                 super().__setattr__(attr, value_fmt)
         #
         #
@@ -186,12 +246,141 @@ class Service:
 ###############################################################################
 ###############################################################################
 #   END "SERVICE".
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def main():
+    s1          = Service(name="X-Ray", id="123456",
+                          provider_name="Providence",    provider_id="000000001",
+                          patient_name="Collin Bond",    patient_id="000000007",
+                          dos="28-11-2024", dor="28-11-2024 11:37:15",
+                          comments="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
+                          fee=999.99)
+                          
+    s2          = Service(name="Service Name", id="123456",
+                          patient_name="Collin Bond",    patient_id="000000007",
+                          provider_name="Providence",    provider_id="000000001",
+                          comments="some notes and comments", fee=999.99)
+                          
+                          
+                         
+    print(f"\n\nPrinting the FIRST service...\n{s1}")
     
+    
+    print(f"\n\nPrinting another service...\n{s2}")
+    
+    
+    
+    print(f"\n\n")
+    
+    return
 
 
 
 
 
-###############################################################################
-###############################################################################
-#   END "SERVICES".
+def test_datetime():
+    print("\n\n")
+    
+    
+    #   TEST 1.
+    #   1.1.    Create a date (DOS).
+    print(f"{CYAN_BB}TEST #1:\n{CYAN_BRIGHT}Store a date as \"MM-DD-YYYY\"...{RESET} ")
+    test_1      = dt.date(2024, 11, 28)
+    date_fmt_1  = test_1.strftime( _S_SIZE_CONSTANTS['dos'] )
+    print(f"\tdatetime.date(2024, 11, 28)\t\t\t=\t{date_fmt_1}")
+    #
+    #   1.2.    GETTING THE TYPE.
+    type1   = type(test_1)
+    type2   = type(date_fmt_1)
+    print(f"\ttype( date(y, d, m) )\t\t\t\t=\t{RED_BB}{type1}{RESET}", end="\n")
+    print(f"\ttype( date(y, d, m).strftime( ...format... ) )\t=\t{RED_BB}{type2}{RESET}", end="\n\n")
+
+
+    #   TEST 2.
+    #   2.1.    Create a date with a time (DOR).
+    print(f"{CYAN_BB}TEST #2:\n{CYAN_BRIGHT}Store a date and time as \"MM-DD-YYYY HH-MM-SS\"...{RESET} ")
+    test_2      = dt.datetime(2024, 11, 28, 14, 30, 45)
+    date_fmt_2  = test_2.strftime( _S_SIZE_CONSTANTS['dor'] )
+    print(f"\tdatetime.datetime(2024, 11, 28, 14, 30, 45)\t=\t{date_fmt_2}")
+    #
+    #   2.2.    GETTING THE TYPE.
+    type1       = type(test_2)
+    type2       = type(date_fmt_2)
+    print(f"\ttype( datetime(y, d, m, ... ) )\t\t\t=\t{RED_BB}{type1}{RESET}", end="\n")
+    print(f"\ttype( datetime(...).strftime( ...format... ) )\t=\t{RED_BB}{type2}{RESET}", end="\n\n")
+    
+    
+    
+    #   TEST 3.
+    #   3.1.    Get the current DATE and TIME.
+    print(f"{CYAN_BB}TEST #3:\n{CYAN_BRIGHT}Get the CURRENT date and time as \"MM-DD-YYYY HH-MM-SS\"...{RESET} ")
+    test_3      = dt.datetime.now()
+    date_fmt_3  = test_3.strftime( _S_SIZE_CONSTANTS['dor'] )
+    print(f"\tdt.datetime.now()\t\t\t\t=\t{date_fmt_3}")
+    #
+    #   3.2.    GETTING THE TYPE.
+    type1       = type(test_3)
+    type2       = type(date_fmt_3)
+    print(f"\ttype( now() )\t\t\t\t\t=\t{RED_BB}{type1}{RESET}", end="\n")
+    print(f"\ttype( now().strftime( ...format... ) )\t\t=\t{RED_BB}{type2}{RESET}", end="\n\n")
+    
+    
+    
+    #   TEST 4.
+    #   4.1.    CREATE A DATE OBJECT FROM A STRING...
+    print(f"{CYAN_BB}TEST #4:\n{CYAN_BRIGHT}Create a date object from a \"MM-DD-YYYY\" string...\" HH-MM-SS\" string...{RESET} ")
+    print(f"\t{CYAN_BB}#4.1. DATE:{RESET} ")
+    date_str_1  = "28-11-2024"
+    obj_1       = dt.datetime.strptime(date_str_1, _S_SIZE_CONSTANTS['dos']).date()
+    print(f"\tdt.strptime(string, fmt).date()\t\t\t=\t{obj_1}")
+    #
+    #   4.1B.   GETTING THE TYPE.
+    type1       = type(obj_1)
+    print(f"\ttype( obj_1 )\t\t\t\t\t=\t{RED_BB}{type1}{RESET}", end="\n")
+    
+    
+    #   4.2.    CREATE A DATETIME OBJECT FROM A STRING...
+    print(f"\n\t{CYAN_BB}#4.2. DATETIME:{RESET} ")
+    date_str_2  = "28-11-2024 11:37:15"
+    obj_2       = dt.datetime.strptime(date_str_2, _S_SIZE_CONSTANTS['dor'])
+    print(f"\tdt.strptime(string, fmt).date()\t\t\t=\t{obj_2}")
+    #
+    #   4.2B.   GETTING THE TYPE.
+    type2       = type(obj_2)
+    print(f"\ttype( obj_2 )\t\t\t\t\t=\t{RED_BB}{type2}{RESET}", end="\n")
+    
+    
+    
+    
+    print("\n\n")
+    return
+
+
+
+
+
+
+if (__name__ == '__main__'):
+    line = f"{MAGENTA_BB}" + '#' * 70 + f"{RESET}"
+    #print(f"{line}\n{line}\n")
+    
+    
+    #test_datetime()
+    
+    #print(f"{line}")
+    
+    main()
+    
+    #print(f"{line}\n{line}\n")

@@ -12,7 +12,8 @@ from dataclasses import dataclass, field
 
 
 
-
+#   1.1.    Service Class.
+from ._services import Service
 
 
 ###############################################################################

@@ -16,11 +16,11 @@ from dataclasses import dataclass, field
 ###############################################################################
 ###############################################################################
 
-#    1.1.   General Utility Functions.
-from ._utility import log, truncate, hanging_indent
+#    1.1.   General Utility / String Functions.
+from ._utility import log, truncate, hanging_indent, make_dboxed
 
 #   1.2.    Application Utility Functions.
-from ._utility import signal_handler, exit_gracefully, cleanup_all
+from ._utility import signal_handler, exit_gracefully, cleanup_all, system_info, manual
 
 
 ###############################################################################

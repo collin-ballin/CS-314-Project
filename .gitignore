@@ -1,0 +1,27 @@
+#  1.	IGNORING ENTIRE DIRECTORIES...
+########################################
+
+
+#  2.	IGNORING SPECIFIC FILE EXTENSIONS...
+########################################
+
+#	2.1.	Ignore misc/temp files.
+*.o
+*.log
+*.tmp
+
+#	2.2.	Ignore executable files.
+*.bin
+*.exe
+*.out
+
+#	2.3.	Ignore image files.
+*.eps
+*.png
+*.pdf
+*.gif
+*.jpg
+*.jpeg
+
+
+
