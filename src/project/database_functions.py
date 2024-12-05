@@ -406,7 +406,7 @@ def retrieve_provider_report(provider_id=None, week_end_date=None):
         if provider_id and week_end_date:
             # Query to fetch the report and provider details
             cur.execute("""
-                SELECT 
+                SELECT DISTINCT
                     p.name AS provider_name,
                     p.street_address,
                     p.city,
@@ -477,6 +477,7 @@ def retrieve_provider_report(provider_id=None, week_end_date=None):
 
 def retrieve_member_report(week_start_date, week_end_date):
     try:
+        # Connect to the PostgreSQL database
         conn = psycopg2.connect(
             dbname="choco",
             user="dev",
@@ -488,7 +489,7 @@ def retrieve_member_report(week_start_date, week_end_date):
 
         # Query to retrieve member details along with services provided during the week
         cur.execute("""
-            SELECT 
+            SELECT DISTINCT
                 m.name AS member_name,
                 m.member_id,
                 m.street_address,
@@ -524,6 +525,7 @@ def retrieve_member_report(week_start_date, week_end_date):
         for record in member_services:
             member_name, member_id, address, city, state, zip_code, service_date, provider_name, service_name = record
 
+            # Start new report for each member
             if current_member_id != member_id:
                 if current_member_id is not None:
                     print("\n" + "=" * 40)
@@ -533,7 +535,13 @@ def retrieve_member_report(week_start_date, week_end_date):
                 print(f"Address: {address}, {city}, {state} {zip_code}")
                 print("\nServices Provided:")
 
-            print(f"  - {service_date.strftime('%m-%d-%Y')}: {provider_name} - {service_name}")
+            # Use a set to track services to avoid printing duplicates
+            printed_services = set()
+
+            # Check if the service has already been printed for this member
+            if service_name not in printed_services:
+                printed_services.add(service_name)
+                print(f"  - {datetime.strptime(service_date, '%Y-%m-%d').strftime('%m-%d-%Y')}: {provider_name} - {service_name}")
 
     except psycopg2.Error as e:
         print(f"Error retrieving member report: {e}")
