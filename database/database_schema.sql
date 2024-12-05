@@ -72,6 +72,7 @@ CREATE TABLE public.service_records (
 
 ALTER TABLE public.service_records OWNER TO postgres;
 
+
 --
 -- Name: service_records_record_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -94,6 +95,11 @@ ALTER SEQUENCE public.service_records_record_id_seq OWNER TO postgres;
 ALTER SEQUENCE public.service_records_record_id_seq OWNED BY public.service_records.record_id;
 
 
+--
+-- Name: service_records record_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.service_records ALTER COLUMN record_id SET DEFAULT nextval('public.service_records_record_id_seq'::regclass);
 --
 -- Name: services; Type: TABLE; Schema: public; Owner: postgres
 --
@@ -124,6 +130,36 @@ CREATE TABLE public.weekly_provider_reports (
 
 
 ALTER TABLE public.weekly_provider_reports OWNER TO postgres;
+
+
+--
+-- Name: weekly_provider_reports_report_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.weekly_provider_reports_report_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.weekly_provider_reports_report_id_seq OWNER TO postgres;
+
+--
+-- Name: weekly_provider_reports_report_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.weekly_provider_reports_report_id_seq OWNED BY public.weekly_provider_reports.report_id;
+
+
+--
+-- Name: service_records record_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.weekly_provider_reports ALTER COLUMN report_id SET DEFAULT nextval('public.weekly_provider_reports_report_id_seq'::regclass);
+
 --
 -- Name: eft_records; Type: TABLE; Schema: public; Owner: postgres
 --
@@ -138,11 +174,31 @@ CREATE TABLE public.eft_records (
 );
 
 ALTER TABLE public.eft_records OWNER TO postgres;
+
+--- create sequence ---
+CREATE SEQUENCE public.eft_records_transaction_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.eft_records_transaction_id_seq OWNER TO postgres;
+
+--
+-- Name: weekly_provider_reports_report_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.eft_records_transaction_id_seq OWNED BY public.eft_records.transaction_id;
+
+
 --
 -- Name: service_records record_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.service_records ALTER COLUMN record_id SET DEFAULT nextval('public.service_records_record_id_seq'::regclass);
+ALTER TABLE ONLY public.eft_records ALTER COLUMN transaction_id SET DEFAULT nextval('public.eft_records_transaction_id_seq'::regclass);
 
 
 --
