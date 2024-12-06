@@ -32,6 +32,7 @@ CREATE TABLE public.members (
     state character(2) NOT NULL,
     zip_code character(5) NOT NULL,
     status character varying(10) DEFAULT 'active'::character varying,
+    comments character varying(64) DEFAULT 'None'::character varying,
     CONSTRAINT members_status_check CHECK (((status)::text = ANY ((ARRAY['active'::character varying, 'suspended'::character varying])::text[])))
 );
 
