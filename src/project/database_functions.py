@@ -10,7 +10,7 @@ from datetime import datetime
 ### CREATE ###
 
 ## CREATE MEMBER
-# create_member(member id, name, street address, city, state, zip code, status)
+# create_member(member id, name, street address, city, state, zip code, status, comments)
 
 ## CREATE PROVIDER
 # create_provider(provider_id, name, street_address, city, state, zip_code)
@@ -260,34 +260,75 @@ def create_eft_report( provider_id, amount, transfer_date):
             conn.close()
 
 # Retrieve / Printing Functions
-def retrieve_member(member_id=None, name=None):
+def printmembers():
     try:
+        # Connect to the database
         conn = psycopg2.connect(
                 dbname="choco",
                 user="dev",
                 password="guest",
                 host="localhost",
                 port="5432"
-                )
+                ) 
         cur = conn.cursor()
 
-        if member_id:
-            cur.execute("SELECT * FROM members WHERE member_id = %s", (member_id,))
-        elif name:
-            cur.execute("SELECT * FROM members WHERE name LIKE %s", ('%' + name + '%',))
-        else:
-            cur.execute("SELECT * FROM members")
+        # Query to fetch all service codes, names, and fees
+        cur.execute("SELECT member_id, name, status, comments FROM members")
 
-        rows = cur.fetchall()
-        for row in rows:
-            print(f"Member: {row}")
-        return rows
+        # Fetch all the service details
+        members = cur.fetchall()
+
+        # Check if any services exist
+        if members:
+            print("\n\t\t=== Members ===")
+            for member in members:
+                member_id, name, status, comments = member
+                print(f"Member Id: {member_id} | Name: {name} | Status : {status} | Comments: {comments}")
+        else:
+            print("No members found.")
 
     except psycopg2.Error as e:
-        print(f"Error retrieving member(s): {e}")
-        return None
-
+        print(f"Error retrieving member details: {e}")
+    
     finally:
+        # Ensure the connection is closed
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()    
+
+def print_service_codes():
+    try:
+        # Connect to the database
+        conn = psycopg2.connect(
+                dbname="choco",
+                user="dev",
+                password="guest",
+                host="localhost",
+                port="5432"
+                )  
+        cur = conn.cursor()
+
+        # Query to fetch all service codes, names, and fees
+        cur.execute("SELECT service_code, service_name, fee FROM services")
+
+        # Fetch all the service details
+        services = cur.fetchall()
+
+        # Check if any services exist
+        if services:
+            print("\n\t\t=== Service Codes ===")
+            for service in services:
+                service_code, service_name, fee = service
+                print(f"Service Code: {service_code} | Name: {service_name} | Fee: ${fee:.2f}")
+        else:
+            print("No services found.")
+
+    except psycopg2.Error as e:
+        print(f"Error retrieving service details: {e}")
+    
+    finally:
+        # Ensure the connection is closed
         if cur:
             cur.close()
         if conn:
@@ -357,6 +398,7 @@ def retrieve_service(service_code=None):
         if conn:
             conn.close()
 
+
 def retrieve_service_records(provider_id=None, member_id=None, service_date=None):
     try:
         conn = psycopg2.connect(
@@ -392,21 +434,23 @@ def retrieve_service_records(provider_id=None, member_id=None, service_date=None
         if conn:
             conn.close()
 
-def retrieve_provider_report(provider_id=None, week_end_date=None):
+def retrieve_provider_report(provider_id=None, week_start_date=None, week_end_date=None):
     try:
+        # Connect to the database
         conn = psycopg2.connect(
-            dbname="choco",
-            user="dev",
-            password="guest",
-            host="localhost",
-            port="5432"
-        )
+                dbname="choco",
+                user="dev",
+                password="guest",
+                host="localhost",
+                port="5432"
+                )  
         cur = conn.cursor()
 
-        if provider_id and week_end_date:
-            # Query to fetch the report and provider details
-            cur.execute("""
+        if week_start_date and week_end_date:
+            # Query to fetch reports for all providers within the specified week range
+            query = """
                 SELECT DISTINCT
+                    p.provider_id,
                     p.name AS provider_name,
                     p.street_address,
                     p.city,
@@ -416,55 +460,83 @@ def retrieve_provider_report(provider_id=None, week_end_date=None):
                     r.total_fees
                 FROM 
                     providers p
-                INNER JOIN 
+                LEFT JOIN 
                     weekly_provider_reports r ON p.provider_id = r.provider_id
                 WHERE 
-                    r.provider_id = %s AND r.week_end_date = %s
-            """, (provider_id, week_end_date))
+                    r.week_end_date BETWEEN ? AND ?
+            """
+            if provider_id:
+                query += " AND r.provider_id = ?"
 
-            provider_details = cur.fetchone()
+            cur.execute(query, (week_start_date, week_end_date, provider_id) if provider_id else (week_start_date, week_end_date))
+
+            provider_details = cur.fetchall()
             if not provider_details:
-                print("No report found for the specified provider and week.")
+                print("No reports found for the specified week range.")
                 return
 
-            print("\n=== Provider Report ===")
-            print(f"Name: {provider_details[0]}")
-            print(f"Address: {provider_details[1]}, {provider_details[2]}, {provider_details[3]} {provider_details[4]}")
-            print(f"Total Consultations: {provider_details[5]}")
-            print(f"Total Fees: ${provider_details[6]:.2f}")
+            for provider in provider_details:
+                print("\n=== Provider Report ===")
+                print(f"Provider Name: {provider[1]}")
+                print(f"Address: {provider[2]}, {provider[3]}, {provider[4]} {provider[5]}")
 
-            # Query to fetch all services provided during the week along with member names
-            cur.execute("""
-                SELECT 
-                    s.record_id,
-                    s.service_date,
-                    s.service_code,
-                    m.name AS member_name,
-                    s.comments
-                FROM 
-                    service_records s
-                INNER JOIN 
-                    members m ON s.member_id = m.member_id
-                WHERE 
-                    s.provider_id = %s AND s.service_date <= %s
-                ORDER BY 
-                    s.service_date
-            """, (provider_id, week_end_date))
+                total_consultations = provider[6] if provider[6] is not None else 0
+                total_fees = provider[7] if provider[7] is not None else 0.0
 
-            services = cur.fetchall()
-            if services:
-                print("\n=== Services Provided ===")
-                for service in services:
-                    print(f"Record ID: {service[0]}")
-                    print(f"  Date: {service[1]}")
-                    print(f"  Service Code: {service[2]}")
-                    print(f"  Member: {service[3]}")
-                    print(f"  Comments: {service[4]}")
-            else:
-                print("\nNo services provided during this period.")
+                # If no report data, calculate the consultations and fees manually
+                if total_consultations == 0 and total_fees == 0.0:
+                    cur.execute("""
+                        SELECT 
+                            COUNT(s.record_id) AS total_consultations,
+                            SUM(svc.fee) AS total_fees
+                        FROM 
+                            service_records s
+                        INNER JOIN 
+                            services svc ON s.service_code = svc.service_code
+                        WHERE 
+                            s.provider_id = ? AND s.service_date BETWEEN ? AND ?
+                    """, (provider[0], week_start_date, week_end_date))
+
+                    result = cur.fetchone()
+
+                    total_consultations = result[0] if result[0] else 0
+                    total_fees = result[1] if result[1] else 0.0
+
+                print(f"Total Consultations: {total_consultations}")
+                print(f"Total Fees: ${total_fees:.2f}")
+                cur.execute("""
+                    SELECT 
+                        s.record_id,
+                        s.service_date,
+                        s.service_code,
+                        m.name AS member_name,
+                        svc.fee AS service_fee
+                    FROM 
+                        service_records s
+                    INNER JOIN 
+                        members m ON s.member_id = m.member_id
+                    INNER JOIN
+                        services svc ON s.service_code = svc.service_code
+                    WHERE 
+                        s.provider_id = ? AND s.service_date BETWEEN ? AND ?
+                    ORDER BY 
+                        s.service_date
+                """, (provider[0], week_start_date, week_end_date))
+
+                services = cur.fetchall()
+                if services:
+                    print("\n=== Services Provided ===")
+                    for service in services:
+                        print(f"Record ID: {service[0]}")
+                        print(f"  Service Date: {datetime.strptime(service[1], '%Y-%m-%d').strftime('%m-%d-%Y')}")
+                        print(f"  Service Code: {service[2]}")
+                        print(f"  Member: {service[3]}")
+                        print(f"  Service Fee: ${service[4]:.2f}")
+                else:
+                    print("\nNo services provided during this period.")
 
         else:
-            print("Please provide both provider_id and week_end_date to retrieve the report.")
+            print("Please provide week_start_date and week_end_date to retrieve the report.")
 
     except psycopg2.Error as e:
         print(f"Error retrieving report: {e}")
@@ -475,44 +547,44 @@ def retrieve_provider_report(provider_id=None, week_end_date=None):
         if conn:
             conn.close()
 
+from datetime import date
 def retrieve_member_report(week_start_date, week_end_date):
     try:
-        # Connect to the PostgreSQL database
+        # Connect to the database
         conn = psycopg2.connect(
-            dbname="choco",
-            user="dev",
-            password="guest",
-            host="localhost",
-            port="5432"
-        )
+                dbname="choco",
+                user="dev",
+                password="guest",
+                host="localhost",
+                port="5432"
+                )  
         cur = conn.cursor()
 
         # Query to retrieve member details along with services provided during the week
         cur.execute("""
-            SELECT DISTINCT
-                m.name AS member_name,
-                m.member_id,
-                m.street_address,
-                m.city,
-                m.state,
-                m.zip_code,
-                s.service_date,
-                p.name AS provider_name,
-                svc.service_name
-            FROM 
-                members m
-            INNER JOIN 
-                service_records s ON m.member_id = s.member_id
-            INNER JOIN 
-                providers p ON s.provider_id = p.provider_id
-            INNER JOIN 
-                services svc ON s.service_code = svc.service_code
-            WHERE 
-                s.service_date BETWEEN %s AND %s
-            ORDER BY 
-                m.member_id, s.service_date
-        """, (week_start_date, week_end_date))
-
+    SELECT DISTINCT
+        m.name AS member_name,
+        m.member_id,
+        m.street_address,
+        m.city,
+        m.state,
+        m.zip_code,
+        s.service_date,
+        p.name AS provider_name,
+        svc.service_name
+    FROM 
+        members m
+    INNER JOIN 
+        service_records s ON m.member_id = s.member_id
+    INNER JOIN 
+        providers p ON s.provider_id = p.provider_id
+    INNER JOIN 
+        services svc ON s.service_code = svc.service_code
+    WHERE 
+        s.service_date BETWEEN ? AND ?
+    ORDER BY 
+        m.member_id, s.service_date
+""", (week_start_date, week_end_date))
         member_services = cur.fetchall()
 
         if not member_services:
@@ -552,7 +624,6 @@ def retrieve_member_report(week_start_date, week_end_date):
         if conn:
             conn.close()
 
-from datetime import date
 def retrieve_service_records(provider_id=None, member_id=None, service_date=None):
     try:
         conn = psycopg2.connect(
@@ -1112,6 +1183,51 @@ def modify_weekly_provider_report(report_id, provider_id=None, week_end_date=Non
         conn.rollback()
 
     finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
+
+# Validate Functions
+def verify_member(member_id):
+    try:
+        # Connect to the SQLite database
+        conn = psycopg2.connect(
+                    dbname="choco",
+                    user="dev",
+                    password="guest",
+                    host="localhost",
+                    port="5432"
+                )  
+        cur = conn.cursor()
+
+        # Query to check if the member_id exists and retrieve the status and comments
+        cur.execute("SELECT member_id, name, status, comments FROM members WHERE member_id = ?", (member_id,))
+
+        # Fetch the member details
+        member = cur.fetchone()  # Fetch a single row
+
+        # Check if the member exists
+        if member:
+            member_id, name, status, comments = member  # Unpack the result
+            
+            # Check if the member is active
+            if status.lower() == "active":
+                print("Active Member Found!")
+            else:
+                print(f"Account Owner: {name}, Member Status: Inactive -> Comments: {comments}")       
+        else:
+            print("No Member Exists.")  # Print this if no member is found
+            return False  # Return False if no matching member_id is found
+
+        return True  # Return True if the member exists and has the required status
+
+    except psycopg2.Error as e:
+        print(f"Error retrieving member details: {e}")
+        return False  # Return False in case of an error
+    
+    finally:
+        # Ensure the connection is closed
         if cur:
             cur.close()
         if conn:
