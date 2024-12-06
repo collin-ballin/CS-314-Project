@@ -12,32 +12,30 @@ def add_member(name, id, address, city, state, zip):
 
     return new_member
 
-def edit_member(member_to_change, field_to_change, new_data):
-    if field_to_change == 'name':
-        member_to_change.name = new_data
-    elif field_to_change == 'address':
-        member_to_change.address = new_data
-    elif field_to_change == 'city':
-        member_to_change.city = new_data
-    elif field_to_change == 'state':
-        member_to_change.state = new_data
-    elif field_to_change == 'zip':
-        member_to_change.zip = new_data
-    else:
-        print("no changes were made")
-        
-    return member_to_change
-
-    
-
-def add_provider():
+def add_provider(name, id, address, city, state, zip):
     new_provider = Provider()
+    new_provider.name = name
+    new_provider.id = id
+    new_provider.address = address
+    new_provider.city = city
+    new_provider.state = state
+    new_provider.zip = zip
 
-def edit_provider():
-    pass
+    return new_provider
 
-def add_service():
+# names, IDs, dos, dor, comments only need to be added when making changes to the service
+# and when they're added to member/provider records
+def add_service(name, id, fee):
     new_service = Service()
+    new_service.name = name
+    new_service.id = id
+    new_service.fee = fee
 
-def edit_service():
-    pass
+    return new_service
+
+def edit_object(obj_to_change, field_to_change, new_data):
+    if hasattr(obj_to_change, field_to_change):
+        setattr(obj_to_change, field_to_change, new_data)
+    else:
+        print("No changes were made: Invalid field name.")
+    return obj_to_change
