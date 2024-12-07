@@ -18,6 +18,32 @@ from lib.utility.constants import _M_SIZE_CONSTANTS
 
 
 
+#   1.  FREESTANDING FUNCTIONS...
+###############################################################################
+###############################################################################
+
+#   "find_member_by_attributes"
+#
+def find_member_by_attributes(members, **attributes):
+    return next(
+        (member for member in members
+         if all(getattr(member, attr) == value for attr, value in attributes.items())),
+        None
+    )
+
+    
+###############################################################################   
+###############################################################################
+#
+#
+#
+#
+#
+#
+#   2.  CLASSES...
+###############################################################################
+###############################################################################
+
 # 	CLASS:  "Member"
 #
 @dataclass(order=True, kw_only=True)
@@ -59,7 +85,6 @@ class Member(User):
             string += f"{record_length} record of prior healthcare service."
         else:
             string += f"{record_length} records prior healthcare services."
-        
         return string
     
     
@@ -82,11 +107,32 @@ class Member(User):
         #
         #   CASE 2 :    Attempt to set/access an unrecognized attribute.
         else:
-            UTL.log(f"Accessing unrecognized attribute, \"{attr}\", in class \"Member\".", ANSI.WARN)
+            #UTL.log(f"Accessing unrecognized attribute, \"{attr}\", in class \"Member\".", ANSI.WARN)
             super().__setattr__(attr, value)
             
-        
         return
+    
+    
+    #   "to_dict"
+    #
+    def to_dict(self) -> dict:
+        base_dict           = super().to_dict()
+        base_dict['type']   = "Member"
+        base_dict.update({
+            "history"   : [service.to_dict() for service in self.history]
+        })
+        return base_dict
+        
+    
+    #   "from_dict"
+    #
+    @classmethod
+    def from_dict(cls, data):
+        member          = cls( name=data['name'],           id=data['id'],
+                               address=data['address'],     city=data['city'],
+                               state=data['state'],         zip=data['zip'] )
+        member.history  = [Service.from_dict(record) for record in data.get("history", [])]
+        return member
             
 
 #   3.  Member Functions...

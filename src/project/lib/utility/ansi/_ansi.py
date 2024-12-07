@@ -74,6 +74,8 @@ BLINK               = "\033[5m"
 INVERSE             = "\033[7m"
 HIDDEN              = "\033[8m"
 STRIKETHROUGH       = "\033[9m"
+DISABLE_WRAP        = "\033[?7l"
+ENABLE_WRAP         = "\033[?7h"
 
 
 #                   2.6.    Cursor Movement Commands.
@@ -153,10 +155,9 @@ def get_cursor_pos() -> tuple:
         tty.setraw(fd)
         sys.stdout.write(GET_POS)
         sys.stdout.flush()
-
-        # I nitialize an empty response
+        
         response = ''
-        while True:
+        while (True):
             # Read one character at a time
             char = sys.stdin.read(1)
             if (char == 'R'):
@@ -178,6 +179,13 @@ def get_cursor_pos() -> tuple:
         
     return
 
+
+
+#   "print_at"
+#
+def print_at(pos:tuple, msg:str):
+    sys.stdout.write(f"{SET(pos[0],pos[1])}{msg}")
+    return
     
 
 ###############################################################################
@@ -199,7 +207,16 @@ class Log_Tag(Enum):
     ERROR       = auto()
     NOTE        = auto()
     
+#   Define an enum for EACH POSITION OF OUTPUT-TEXT.
+class Pos_Tag(Enum):
+    TOP         = auto()
+    BOTTOM      = auto()
+    CENTER      = auto()
+    ABOVE       = auto()
+    BELOW       = auto()
+    CRETURN     = auto()
     
+   
 #   2.1.    CONSTANT VALUES FOR LOG TAGS ...
 ###############################################################################
 #   Log-Type Tags.
@@ -208,6 +225,14 @@ WARN                        = Log_Tag.WARN
 EVENT                       = Log_Tag.EVENT
 ERROR                       = Log_Tag.ERROR
 NOTE                        = Log_Tag.NOTE
+
+#   Log-POSITION Tags.
+TOP                         = Pos_Tag.TOP
+BOTTOM                      = Pos_Tag.BOTTOM
+CENTER                      = Pos_Tag.CENTER
+ABOVE                       = Pos_Tag.ABOVE
+BELOW                       = Pos_Tag.BELOW
+CRETURN                     = Pos_Tag.CRETURN
 
 
 #   2.2.    FORMAT STYLES FOR LOG TYPES ...

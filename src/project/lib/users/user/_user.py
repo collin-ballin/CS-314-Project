@@ -55,13 +55,27 @@ class User(ABC):
                                                 hash=True,      repr=True)
 
 
-#   1.  Build-In Methods...
+#   1.  Built-In Methods...
 ###############################################################################
     
     #   "__post_init__"
     #
     def __post_init__(self):
         return
+    
+    
+    #   "to_dict"
+    #
+    def to_dict(self) -> dict:
+        return {
+            "type"          : "User",
+            "name"          : self.name,
+            "id"            : self.id,
+            "address"       : self.address,
+            "city"          : self.city,
+            "state"         : self.state,
+            "zip"           : self.zip,
+        }
 
 
 #   2.  Properties...
@@ -81,7 +95,6 @@ class User(ABC):
 
 #   3.  Member Functions...
 ###############################################################################
-    
 
 
 

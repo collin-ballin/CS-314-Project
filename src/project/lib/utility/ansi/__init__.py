@@ -36,7 +36,7 @@ from ._ansi import BLACK_BB,        RED_BB,         GREEN_BB,       YELLOW_BB,  
 #   Import 1.5.
 from ._ansi import RESET,           RESET_ALL,      BOLD,           DIM,                \
                    ITALIC,          UNDERLINE,      BLINK,          INVERSE,            \
-                   HIDDEN,          STRIKETHROUGH
+                   HIDDEN,          STRIKETHROUGH,  DISABLE_WRAP,   ENABLE_WRAP
 
 #   Import 1.6.
 from ._ansi import CLEAR,           CLEAR_ABOVE,    CLEAR_BELOW,    CLEAR_LINE,         \
@@ -46,17 +46,20 @@ from ._ansi import CRETURN,         _BELL,          SAVE,           RECALL,     
                    DOWN,            RIGHT,          LEFT,           BELL
 from ._ansi import set,             save,           recall,         up,                 \
                    down,            right,          left,           set_terminal_title, \
-                   hide,            show,           get_cursor_pos
+                   hide,            show,           get_cursor_pos, print_at
                    
     
 #   2.  LOG TAG-DISPATCH VALUES.
 ###############################################################################
 #   2.1.    Log Tags Types.
-from ._ansi import Log_Tag
+from ._ansi import Log_Tag,         Pos_Tag
 
 #   2.2.    Log Type Tags.
 from ._ansi import LOG,             WARN,           ERROR,          EVENT,  \
                    NOTE
+from ._ansi import TOP,             BOTTOM,         CENTER
+from ._ansi import ABOVE,           BELOW,          CRETURN
+                   
                    
 #   2.3.    Log-Styles.
 from ._ansi import LOG_LINEWIDTH,   LOG_STYLES

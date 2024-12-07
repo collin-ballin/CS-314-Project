@@ -16,9 +16,13 @@ import textwrap, re
 ################################################################################
 ################################################################################
 
+
 #   "log"
 #
-def log(msg: str, type:ANSI.Log_Tag=ANSI.Log_Tag.LOG, color:bool=True, linewidth:int=ANSI.LOG_LINEWIDTH, log_types=ANSI.LOG_STYLES):
+def log(msg:str,                type:ANSI.Log_Tag=ANSI.Log_Tag.LOG,     color:bool=True,
+        pos:tuple=(999,0),      linewidth:int=ANSI.LOG_LINEWIDTH,       log_types=ANSI.LOG_STYLES):
+    sys.stdout.write(f"{ANSI.SET(pos[0], pos[1])}")
+    
     if type not in log_types:#          2.  Default value if unknown type is provided...
         type = ANSI.LOG
         
@@ -132,6 +136,7 @@ def cleanup_all():
 #   "exit_gracefully"
 #
 def exit_gracefully():
+    log("Exiting Gracefully...", type=ANSI.NOTE)
     return
 
 
@@ -210,7 +215,7 @@ def manual():
     
     {header('AUTHORS')}
             This project was written and developed by {underline('GROUP #6')} of the CS-314 Class...
-            - {auth('Hemu Babis', 'bellmic@pdx.edu')},          
+            - {auth('Hemu Babis', 'hemu@pdx.edu')},          
             - {auth('Elizabeth Barnett', 'eb32@pdx.edu')},         
             - {auth('Michael Bell', 'bellmic@pdx.edu')},  
             - {auth('Collin Bond', 'collin23@pdx.edu')},

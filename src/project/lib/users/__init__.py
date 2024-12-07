@@ -20,11 +20,11 @@ from lib.users.user import User
 
 
 #   1.2.    MEMBER.
-from lib.users.member import Member
+from lib.users.member import Member, find_member_by_attributes
 
 
 #   1.3.    PROVIDER.
-#import lib.users.provider
+from lib.users.provider import Provider, find_provider_by_attributes
 
 
 

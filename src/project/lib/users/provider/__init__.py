@@ -12,7 +12,7 @@
 
 
 #   1.1.    Import "Provider" class.
-from ._provider import Provider
+from ._provider import Provider, find_provider_by_attributes
 
 
 

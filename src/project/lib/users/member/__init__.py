@@ -12,7 +12,7 @@
 
 
 #   1.1.    Import "Member" class.
-from ._member import Member
+from ._member import Member, find_member_by_attributes
 
 
 
