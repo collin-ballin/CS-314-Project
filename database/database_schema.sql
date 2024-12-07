@@ -32,7 +32,7 @@ CREATE TABLE public.members (
     state character(2) NOT NULL,
     zip_code character(5) NOT NULL,
     status character varying(10) DEFAULT 'active'::character varying,
-    comments character varying(64) DEFAULT 'None'::character varying,
+    comments character varying(64) DEFAULT 'None'::character varying, -- reasoning for acccount suspension
     CONSTRAINT members_status_check CHECK (((status)::text = ANY ((ARRAY['active'::character varying, 'suspended'::character varying])::text[])))
 );
 
@@ -165,19 +165,21 @@ ALTER TABLE ONLY public.weekly_provider_reports ALTER COLUMN report_id SET DEFAU
 -- Name: eft_records; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.eft_records (
-    transaction_id serial PRIMARY KEY,  -- Automatically generates a unique transaction ID
-    provider_id character(9) NOT NULL,  -- Foreign key to providers table
-    amount numeric(10,2) NOT NULL CHECK (amount <= 999999.99),  -- Amount (up to $999,999.99)
-    transfer_date date NOT NULL,  -- The date of the transfer
-    CONSTRAINT eft_records_provider_id_fkey FOREIGN KEY (provider_id)
-        REFERENCES public.providers(provider_id) ON DELETE CASCADE  -- Foreign key referencing providers table
+ CREATE TABLE IF NOT EXISTS consultation_records (
+        consultation_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        provider_id INTEGER NOT NULL,
+        member_id INTEGER NOT NULL,  
+        consultation_date DATE NOT NULL, 
+        comments TEXT NOT NULL,  
+        FOREIGN KEY (provider_id) REFERENCES providers(provider_id) ON DELETE CASCADE,  
+        FOREIGN KEY (member_id) REFERENCES members(member_id) ON DELETE CASCADE    
 );
+             
 
-ALTER TABLE public.eft_records OWNER TO postgres;
+ALTER TABLE public.consulation_records OWNER TO postgres;
 
 --- create sequence ---
-CREATE SEQUENCE public.eft_records_transaction_id_seq
+CREATE SEQUENCE public.consulation_records_consulation_id_seq:
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -186,7 +188,7 @@ CREATE SEQUENCE public.eft_records_transaction_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.eft_records_transaction_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.CREATE SEQUENCE public.consulation_records_consulation_id_seq OWNER TO postgres;
 
 --
 -- Name: weekly_provider_reports_report_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
