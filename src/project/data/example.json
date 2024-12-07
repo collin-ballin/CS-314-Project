@@ -1,0 +1,24 @@
+{
+    "type": "Provider" or "Member",
+    "name": "Name of the person",
+    "id": "Unique 9-digit ID",
+    "address": "Address of the provider/member",
+    "city": "City name",
+    "state": "State abbreviation",
+    "zip": "5-digit ZIP code",
+    "comments": "Provider-specific or member-specific comments",
+    "history": [
+        {
+            "name": "Service Name",
+            "id": "Unique 6-digit Service ID",
+            "patient_name": "Name of the patient",
+            "patient_id": "Patient's ID",
+            "provider_name": "Name of the provider",
+            "provider_id": "Provider's ID",
+            "dos": "Date of Service (MM-DD-YYYY)",
+            "dor": "Date of Record (MM-DD-YYYY HH:MM:SS)",
+            "comments": "Humorous, thematic notes for the service",
+            "fee": Fee amount in USD
+        }
+    ]
+}

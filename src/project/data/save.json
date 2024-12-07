@@ -1,0 +1,403 @@
+[
+    {
+        "type": "Member",
+        "name": "Collin A Bond",
+        "id": "000000001",
+        "address": "10 Marshall St",
+        "city": "Portland",
+        "state": "OR",
+        "zip": "97009",
+        "history": [
+            {
+                "name": "X-Ray",
+                "id": "500001",
+                "dos": "15-11-2024",
+                "dor": "28-11-2024 11:37:15",
+                "patient_name": "Collin A Bond",
+                "patient_id": "000000001",
+                "provider_name": "Dr. Gregory House",
+                "provider_id": "900000001",
+                "comments": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex",
+                "fee": 123.12
+            },
+            {
+                "name": "NMRI Imaging",
+                "id": "100001",
+                "dos": "20-11-2024",
+                "dor": "20-11-2024 11:37:15",
+                "patient_name": "Collin A Bond",
+                "patient_id": "000000001",
+                "provider_name": "Dr. Gregory House",
+                "provider_id": "900000001",
+                "comments": "House, we need to cure this patient.  Have you tried the medicine drug",
+                "fee": 99.012
+            },
+            {
+                "name": "Consultation",
+                "id": "990001",
+                "dos": "24-11-2024",
+                "dor": "28-11-2024 11:37:15",
+                "patient_name": "Collin A Bond",
+                "patient_id": "000000001",
+                "provider_name": "Dr. Gregory House",
+                "provider_id": "900000001",
+                "comments": "Patient needs mouse bites to live...",
+                "fee": 140.1
+            }
+        ]
+    },
+    {
+        "type": "Member",
+        "name": "Walter H. White",
+        "id": "000490662",
+        "address": "308 Negra Arroyo Lane",
+        "city": "Albuquerque",
+        "state": "NM",
+        "zip": "87104",
+        "history": [
+            {
+                "name": "Chemotherapy",
+                "id": "900003",
+                "dos": "01-12-2024",
+                "dor": "02-12-2024 09:45:00",
+                "patient_name": "Walter H. White",
+                "patient_id": "000490662",
+                "provider_name": "Dr. Gale Boetticher",
+                "provider_id": "900000002",
+                "comments": "Patient showing good progress, continuing treatment",
+                "fee": 250.00
+            },
+            {
+                "name": "Blood Test",
+                "id": "900004",
+                "dos": "05-12-2024",
+                "dor": "05-12-2024 12:00:00",
+                "patient_name": "Walter H. White",
+                "patient_id": "000490662",
+                "provider_name": "Dr. Gale Boetticher",
+                "provider_id": "900000002",
+                "comments": "Routine follow-up blood work",
+                "fee": 75.50
+            }
+        ]
+    },
+    {
+        "type": "Member",
+        "name": "Dr. Gurt",
+        "id": "100922000",
+        "address": "688 Gurt Ave",
+        "city": "Berlin",
+        "state": "GE",
+        "zip": "00000",
+        "history": [
+            {
+                "name": "Consultation",
+                "id": "300002",
+                "dos": "10-11-2024",
+                "dor": "10-11-2024 15:30:00",
+                "patient_name": "Dr. Gurt",
+                "patient_id": "100922000",
+                "provider_name": "Dr. Strange",
+                "provider_id": "900000003",
+                "comments": "Discussed recent health concerns, advised on stress management techniques",
+                "fee": 110.75
+            }
+        ]
+    },
+    {
+        "type": "Member",
+        "name": "Jeff",
+        "id": "500050009",
+        "address": "1234 My Addres St.",
+        "city": "San Diego",
+        "state": "CA",
+        "zip": "10101",
+        "history": [
+            {
+                "name": "Physiotherapy",
+                "id": "200008",
+                "dos": "22-11-2024",
+                "dor": "25-11-2024 14:00:00",
+                "patient_name": "Jeff",
+                "patient_id": "500050009",
+                "provider_name": "Dr. Mark Sloan",
+                "provider_id": "900000004",
+                "comments": "Patient recovering well from back injury",
+                "fee": 130.00
+            },
+            {
+                "name": "General Checkup",
+                "id": "200009",
+                "dos": "25-11-2024",
+                "dor": "25-11-2024 16:00:00",
+                "patient_name": "Jeff",
+                "patient_id": "500050009",
+                "provider_name": "Dr. Mark Sloan",
+                "provider_id": "900000004",
+                "comments": "Routine physical examination, no issues detected",
+                "fee": 90.25
+            }
+        ]
+    },
+    {
+        "type": "Member",
+        "name": "Anna Thompson",
+        "id": "300120098",
+        "address": "789 Elm St",
+        "city": "Seattle",
+        "state": "WA",
+        "zip": "98101",
+        "history": [
+            {
+                "name": "Dental Cleaning",
+                "id": "700001",
+                "dos": "12-10-2024",
+                "dor": "12-10-2024 10:00:00",
+                "patient_name": "Anna Thompson",
+                "patient_id": "300120098",
+                "provider_name": "Dr. Emily Bright",
+                "provider_id": "900000005",
+                "comments": "Routine cleaning, no issues found",
+                "fee": 80.00
+            },
+            {
+                "name": "Eye Examination",
+                "id": "700002",
+                "dos": "15-10-2024",
+                "dor": "15-10-2024 14:00:00",
+                "patient_name": "Anna Thompson",
+                "patient_id": "300120098",
+                "provider_name": "Dr. John Vision",
+                "provider_id": "900000006",
+                "comments": "Mild myopia detected, prescription given",
+                "fee": 100.00
+            },
+            {
+                "name": "Physical Therapy",
+                "id": "700003",
+                "dos": "20-10-2024",
+                "dor": "20-10-2024 11:00:00",
+                "patient_name": "Anna Thompson",
+                "patient_id": "300120098",
+                "provider_name": "Dr. Mark Sloan",
+                "provider_id": "900000004",
+                "comments": "Initial consultation for knee pain",
+                "fee": 120.00
+            }
+        ]
+    },
+    {
+        "type": "Member",
+        "name": "Michael Johnson",
+        "id": "700234567",
+        "address": "456 Pine St",
+        "city": "Denver",
+        "state": "CO",
+        "zip": "80202",
+        "history": [
+            {
+                "name": "Flu Vaccination",
+                "id": "800001",
+                "dos": "01-11-2024",
+                "dor": "01-11-2024 09:00:00",
+                "patient_name": "Michael Johnson",
+                "patient_id": "700234567",
+                "provider_name": "Dr. Sarah Wells",
+                "provider_id": "900000007",
+                "comments": "Administered flu vaccine, no adverse reactions",
+                "fee": 50.00
+            },
+            {
+                "name": "Blood Pressure Check",
+                "id": "800002",
+                "dos": "05-11-2024",
+                "dor": "05-11-2024 13:00:00",
+                "patient_name": "Michael Johnson",
+                "patient_id": "700234567",
+                "provider_name": "Dr. Sarah Wells",
+                "provider_id": "900000007",
+                "comments": "Blood pressure slightly elevated, advised on diet",
+                "fee": 40.00
+            },
+            {
+                "name": "Cholesterol Test",
+                "id": "800003",
+                "dos": "10-11-2024",
+                "dor": "10-11-2024 11:00:00",
+                "patient_name": "Michael Johnson",
+                "patient_id": "700234567",
+                "provider_name": "Dr. Sarah Wells",
+                "provider_id": "900000007",
+                "comments": "Cholesterol levels within normal range",
+                "fee": 60.00
+            },
+            {
+                "name": "Allergy Test",
+                "id": "800004",
+                "dos": "15-11-2024",
+                "dor": "15-11-2024 10:30:00",
+                "patient_name": "Michael Johnson",
+                "patient_id": "700234567",
+                "provider_name": "Dr. Emily Bright",
+                "provider_id": "900000005",
+                "comments": "Mild allergy to pollen detected",
+                "fee": 85.00
+            },
+            {
+                "name": "Skin Examination",
+                "id": "800005",
+                "dos": "20-11-2024",
+                "dor": "20-11-2024 15:00:00",
+                "patient_name": "Michael Johnson",
+                "patient_id": "700234567",
+                "provider_name": "Dr. Emily Bright",
+                "provider_id": "900000005",
+                "comments": "No signs of abnormal skin growths",
+                "fee": 70.00
+            },
+            {
+                "name": "Consultation",
+                "id": "800006",
+                "dos": "25-11-2024",
+                "dor": "25-11-2024 16:00:00",
+                "patient_name": "Michael Johnson",
+                "patient_id": "700234567",
+                "provider_name": "Dr. Sarah Wells",
+                "provider_id": "900000007",
+                "comments": "General health checkup, all vitals normal",
+                "fee": 100.00
+            }
+        ]
+    },
+    {
+        "type": "Member",
+        "name": "Linda Carter",
+        "id": "800345678",
+        "address": "123 Oak St",
+        "city": "Austin",
+        "state": "TX",
+        "zip": "73301",
+        "history": [
+            {
+                "name": "General Checkup",
+                "id": "900001",
+                "dos": "01-10-2024",
+                "dor": "01-10-2024 08:30:00",
+                "patient_name": "Linda Carter",
+                "patient_id": "800345678",
+                "provider_name": "Dr. Rachel Adams",
+                "provider_id": "900000008",
+                "comments": "Routine checkup, no issues",
+                "fee": 90.00
+            },
+            {
+                "name": "Dental Examination",
+                "id": "900002",
+                "dos": "05-10-2024",
+                "dor": "05-10-2024 10:00:00",
+                "patient_name": "Linda Carter",
+                "patient_id": "800345678",
+                "provider_name": "Dr. Emily Bright",
+                "provider_id": "900000005",
+                "comments": "Mild gingivitis detected, prescribed mouthwash",
+                "fee": 85.00
+            },
+            {
+                "name": "Cardiology Consultation",
+                "id": "900003",
+                "dos": "10-10-2024",
+                "dor": "10-10-2024 09:00:00",
+                "patient_name": "Linda Carter",
+                "patient_id": "800345678",
+                "provider_name": "Dr. Oliver Heart",
+                "provider_id": "900000009",
+                "comments": "Murmur detected, follow-up scheduled",
+                "fee": 150.00
+            },
+            {
+                "name": "Blood Test",
+                "id": "900004",
+                "dos": "15-10-2024",
+                "dor": "15-10-2024 11:00:00",
+                "patient_name": "Linda Carter",
+                "patient_id": "800345678",
+                "provider_name": "Dr. Sarah Wells",
+                "provider_id": "900000007",
+                "comments": "Blood work normal",
+                "fee": 75.00
+            },
+            {
+                "name": "X-Ray",
+                "id": "900005",
+                "dos": "20-10-2024",
+                "dor": "20-10-2024 13:00:00",
+                "patient_name": "Linda Carter",
+                "patient_id": "800345678",
+                "provider_name": "Dr. Gregory House",
+                "provider_id": "900000001",
+                "comments": "Chest X-ray shows clear lungs",
+                "fee": 120.00
+            },
+            {
+                "name": "MRI Scan",
+                "id": "900006",
+                "dos": "25-10-2024",
+                "dor": "25-10-2024 15:00:00",
+                "patient_name": "Linda Carter",
+                "patient_id": "800345678",
+                "provider_name": "Dr. Gregory House",
+                "provider_id": "900000001",
+                "comments": "No abnormalities detected",
+                "fee": 200.00
+            },
+            {
+                "name": "Allergy Consultation",
+                "id": "900007",
+                "dos": "01-11-2024",
+                "dor": "01-11-2024 10:30:00",
+                "patient_name": "Linda Carter",
+                "patient_id": "800345678",
+                "provider_name": "Dr. Emily Bright",
+                "provider_id": "900000005",
+                "comments": "No new allergies detected",
+                "fee": 95.00
+            },
+            {
+                "name": "Ultrasound",
+                "id": "900008",
+                "dos": "05-11-2024",
+                "dor": "05-11-2024 14:00:00",
+                "patient_name": "Linda Carter",
+                "patient_id": "800345678",
+                "provider_name": "Dr. Oliver Heart",
+                "provider_id": "900000009",
+                "comments": "Normal abdominal ultrasound",
+                "fee": 175.00
+            },
+            {
+                "name": "Nutritionist Consultation",
+                "id": "900009",
+                "dos": "10-11-2024",
+                "dor": "10-11-2024 12:00:00",
+                "patient_name": "Linda Carter",
+                "patient_id": "800345678",
+                "provider_name": "Dr. Rachel Adams",
+                "provider_id": "900000008",
+                "comments": "Diet plan provided, advised on healthy eating",
+                "fee": 100.00
+            },
+            {
+                "name": "Vaccination",
+                "id": "900010",
+                "dos": "15-11-2024",
+                "dor": "15-11-2024 11:30:00",
+                "patient_name": "Linda Carter",
+                "patient_id": "800345678",
+                "provider_name": "Dr. Sarah Wells",
+                "provider_id": "900000007",
+                "comments": "Administered booster vaccine, no side effects",
+                "fee": 80.00
+            }
+        ]
+    }
+] 

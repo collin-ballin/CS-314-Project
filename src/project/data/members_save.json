@@ -1,0 +1,401 @@
+[
+    {
+        "type": "Member",
+        "name": "James T. Kirk",
+        "id": "100001105",
+        "address": "1701 Starfleet Blvd",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94129",
+        "history": [
+            {
+                "name": "General Consultation",
+                "id": "100001",
+                "patient_name": "James T. Kirk",
+                "patient_id": "100001105",
+                "provider_name": "Dr. Leonard McCoy",
+                "provider_id": "900001025",
+                "dos": "12-01-2024",
+                "dor": "12-02-2024 14:45:00",
+                "comments": "Advised to avoid alien love affairs. High-stress leadership position noted.",
+                "fee": 150.0
+            },
+            {
+                "name": "Stress Management Session",
+                "id": "300003",
+                "patient_name": "James T. Kirk",
+                "patient_id": "100001105",
+                "provider_name": "Dr. Leonard McCoy",
+                "provider_id": "900001025",
+                "dos": "12-10-2024",
+                "dor": "12-10-2024 16:00:00",
+                "comments": "Recommended relaxation techniques and mindfulness exercises.",
+                "fee": 140.0
+            },
+            {
+                "name": "Post-Mission Decompression",
+                "id": "300004",
+                "patient_name": "James T. Kirk",
+                "patient_id": "100001105",
+                "provider_name": "Dr. Leonard McCoy",
+                "provider_id": "900001025",
+                "dos": "12-15-2024",
+                "dor": "12-15-2024 12:30:00",
+                "comments": "Discussed mission stressors and dietary adjustments to reduce chocolate dependency.",
+                "fee": 160.0
+            },
+            {
+                "name": "Dietary Counseling",
+                "id": "400001",
+                "patient_name": "James T. Kirk",
+                "patient_id": "100001105",
+                "provider_name": "Montgomery Scott",
+                "provider_id": "900003501",
+                "dos": "12-03-2024",
+                "dor": "12-03-2024 13:00:00",
+                "comments": "Recommended reduction in chocolate consumption during mission briefings.",
+                "fee": 90.0
+            },
+            {
+                "name": "Engineering Stress Debrief",
+                "id": "300007",
+                "patient_name": "James T. Kirk",
+                "patient_id": "100001105",
+                "provider_name": "Montgomery Scott",
+                "provider_id": "900003501",
+                "dos": "12-12-2024",
+                "dor": "12-12-2024 12:00:00",
+                "comments": "Discussed overworking the warp core. Suggested chocolate breaks in moderation for morale boosting.",
+                "fee": 100.0
+            }
+        ]
+    },
+    {
+        "type": "Member",
+        "name": "Nyota Uhura",
+        "id": "100005462",
+        "address": "Communications Tower",
+        "city": "Nairobi",
+        "state": "KE",
+        "zip": "00100",
+        "history": [
+            {
+                "name": "Eye Examination",
+                "id": "700002",
+                "patient_name": "Nyota Uhura",
+                "patient_id": "100005462",
+                "provider_name": "Spock",
+                "provider_id": "900002317",
+                "dos": "11-25-2024",
+                "dor": "11-25-2024 10:30:00",
+                "comments": "Prescribed blue-light glasses to counter communications panel glare.",
+                "fee": 100.0
+            },
+            {
+                "name": "Nutritional Counseling",
+                "id": "400002",
+                "patient_name": "Nyota Uhura",
+                "patient_id": "100005462",
+                "provider_name": "Dr. Leonard McCoy",
+                "provider_id": "900001025",
+                "dos": "10-05-2024",
+                "dor": "10-05-2024 09:00:00",
+                "comments": "Suggested reducing reliance on chocolate-based energy supplements.",
+                "fee": 100.0
+            },
+            {
+                "name": "Vulcan Health Analysis",
+                "id": "400003",
+                "patient_name": "Nyota Uhura",
+                "patient_id": "100005462",
+                "provider_name": "Spock",
+                "provider_id": "900002317",
+                "dos": "12-05-2024",
+                "dor": "12-05-2024 10:00:00",
+                "comments": "Provided insights on balancing nutrition and professional responsibilities. Chocolate intake logged and monitored.",
+                "fee": 140.0
+            },
+            {
+                "name": "Nutritional Optimization",
+                "id": "400004",
+                "patient_name": "Nyota Uhura",
+                "patient_id": "100005462",
+                "provider_name": "Montgomery Scott",
+                "provider_id": "900003501",
+                "dos": "12-10-2024",
+                "dor": "12-10-2024 09:30:00",
+                "comments": "Focused on dietary adjustments for high-stress communication scenarios. Chocolate rationing advised.",
+                "fee": 120.0
+            }
+        ]
+    },
+    {
+        "type": "Member",
+        "name": "Montgomery Scott",
+        "id": "100003789",
+        "address": "1 Engineering Bay",
+        "city": "Riverside",
+        "state": "IA",
+        "zip": "52327",
+        "history": [
+            {
+                "name": "Physiotherapy",
+                "id": "300001",
+                "patient_name": "Montgomery Scott",
+                "patient_id": "100003789",
+                "provider_name": "Dr. Leonard McCoy",
+                "provider_id": "900001025",
+                "dos": "11-10-2024",
+                "dor": "11-12-2024 16:00:00",
+                "comments": "Recovering from shoulder strain caused by overzealous equipment maintenance.",
+                "fee": 120.0
+            },
+            {
+                "name": "Post-Maintenance Recovery",
+                "id": "300008",
+                "patient_name": "Montgomery Scott",
+                "patient_id": "100003789",
+                "provider_name": "Montgomery Scott",
+                "provider_id": "900003501",
+                "dos": "12-15-2024",
+                "dor": "12-15-2024 14:00:00",
+                "comments": "Self-prescribed recovery session after heavy maintenance schedule. Monitored chocolate intake.",
+                "fee": 95.0
+            }
+        ]
+    },
+    {
+        "type": "Member",
+        "name": "Hikaru Sulu",
+        "id": "100008903",
+        "address": "Astrogation Hub",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94129",
+        "history": [
+            {
+                "name": "Routine Check-Up",
+                "id": "100003",
+                "patient_name": "Hikaru Sulu",
+                "patient_id": "100008903",
+                "provider_name": "Dr. Leonard McCoy",
+                "provider_id": "900001025",
+                "dos": "09-20-2024",
+                "dor": "09-20-2024 10:30:00",
+                "comments": "All vital signs stable. Chocolate consumption noted as occasional indulgence.",
+                "fee": 110.0
+            },
+            {
+                "name": "Logic Training Exercise",
+                "id": "300006",
+                "patient_name": "Hikaru Sulu",
+                "patient_id": "100008903",
+                "provider_name": "Spock",
+                "provider_id": "900002317",
+                "dos": "11-22-2024",
+                "dor": "11-22-2024 14:00:00",
+                "comments": "Focused on critical thinking and reducing overreliance on comfort foods, including chocolate.",
+                "fee": 110.0
+            },
+            {
+                "name": "Physical Therapy",
+                "id": "300002",
+                "patient_name": "Hikaru Sulu",
+                "patient_id": "100008903",
+                "provider_name": "Montgomery Scott",
+                "provider_id": "900003501",
+                "dos": "11-20-2024",
+                "dor": "11-22-2024 15:00:00",
+                "comments": "Shoulder recovery noted after intense fencing practice. Chocolate intake adjusted for recovery.",
+                "fee": 110.0
+            }
+        ]
+    },
+    {
+        "type": "Member",
+        "name": "Pavel Chekov",
+        "id": "100006789",
+        "address": "Navigation Center",
+        "city": "Moscow",
+        "state": "RU",
+        "zip": "101000",
+        "history": [
+            {
+                "name": "General Consultation",
+                "id": "100002",
+                "patient_name": "Pavel Chekov",
+                "patient_id": "100006789",
+                "provider_name": "Spock",
+                "provider_id": "900002317",
+                "dos": "11-15-2024",
+                "dor": "11-15-2024 11:00:00",
+                "comments": "Advised to limit chocolate consumption to avoid over-excitement during navigation duties.",
+                "fee": 80.0
+            },
+            {
+                "name": "Post-Mission Evaluation",
+                "id": "100004",
+                "patient_name": "Pavel Chekov",
+                "patient_id": "100006789",
+                "provider_name": "Spock",
+                "provider_id": "900002317",
+                "dos": "12-10-2024",
+                "dor": "12-10-2024 13:30:00",
+                "comments": "Reviewed mission performance. Discussed dietary habits, including chocolate consumption, as part of health optimization.",
+                "fee": 130.0
+            },
+            {
+                "name": "Routine Engineering Check-Up",
+                "id": "300009",
+                "patient_name": "Pavel Chekov",
+                "patient_id": "100006789",
+                "provider_name": "Montgomery Scott",
+                "provider_id": "900003501",
+                "dos": "12-08-2024",
+                "dor": "12-08-2024 10:45:00",
+                "comments": "Reviewed equipment usage habits. Suggested chocolate breaks to maintain focus during engineering shifts.",
+                "fee": 130.0
+            }
+        ]
+    },
+    {
+        "type": "Member",
+        "name": "Luke Skywalker",
+        "id": "100009003",
+        "address": "Tatooine Homestead",
+        "city": "Mos Eisley",
+        "state": "TA",
+        "zip": "12345",
+        "history": [
+            {
+                "name": "Protocol Analysis",
+                "id": "100101",
+                "patient_name": "Luke Skywalker",
+                "patient_id": "100009003",
+                "provider_name": "C-3PO",
+                "provider_id": "900004001",
+                "dos": "12-03-2024",
+                "dor": "12-04-2024 10:15:00",
+                "comments": "Advised patient on the proper etiquette for a diplomatic dinner to avoid excessive cocoa consumption. Patient seemed skeptical.",
+                "fee": 125.0
+            },
+            {
+                "name": "Cocoa-Induced Stress Counseling",
+                "id": "100106",
+                "patient_name": "Luke Skywalker",
+                "patient_id": "100009003",
+                "provider_name": "C-3PO",
+                "provider_id": "900004001",
+                "dos": "12-13-2024",
+                "dor": "12-14-2024 15:00:00",
+                "comments": "Helped patient manage stress caused by excessive cocoa cravings. Recommended mindfulness techniques. Patient appeared slightly calmer.",
+                "fee": 130.0
+            },
+            {
+                "name": "Cocoa-Induced Strength Training",
+                "id": "200203",
+                "patient_name": "Luke Skywalker",
+                "patient_id": "100009003",
+                "provider_name": "Chewbacca",
+                "provider_id": "900004002",
+                "dos": "12-19-2024",
+                "dor": "12-20-2024 15:30:00",
+                "comments": "bBbBRrWWWWWRRAAAARGH..",
+                "fee": 150.0
+            }
+        ]
+    },
+    {
+        "type": "Member",
+        "name": "Leia Organa",
+        "id": "100009002",
+        "address": "Alderaan Embassy",
+        "city": "Mos Eisley",
+        "state": "TA",
+        "zip": "67890",
+        "history": [
+            {
+                "name": "Chocolate Inventory Audit",
+                "id": "100102",
+                "patient_name": "Leia Organa",
+                "patient_id": "100009002",
+                "provider_name": "C-3PO",
+                "provider_id": "900004001",
+                "dos": "12-05-2024",
+                "dor": "12-06-2024 11:00:00",
+                "comments": "Meticulously cataloged and reorganized the patient’s chocolate stash. Suggested reducing dark chocolate inventory by 25%.",
+                "fee": 150.0
+            },
+            {
+                "name": "Cocoa Craving Intervention",
+                "id": "200202",
+                "patient_name": "Leia Organa",
+                "patient_id": "100009002",
+                "provider_name": "Chewbacca",
+                "provider_id": "900004002",
+                "dos": "12-17-2024",
+                "dor": "12-18-2024 13:45:00",
+                "comments": "AAAUUWWRRRRWWWW!",
+                "fee": 160.0
+            }
+        ]
+    },
+    {
+        "type": "Member",
+        "name": "Han Solo",
+        "id": "100009001",
+        "address": "Millennium Falcon Dock",
+        "city": "Mos Eisley",
+        "state": "TA",
+        "zip": "54321",
+        "history": [
+            {
+                "name": "Cocoa Consumption Advisory",
+                "id": "100103",
+                "patient_name": "Han Solo",
+                "patient_id": "100009001",
+                "provider_name": "C-3PO",
+                "provider_id": "900004001",
+                "dos": "12-07-2024",
+                "dor": "12-07-2024 14:30:00",
+                "comments": "Warned patient against smuggling high-cocoa-content contraband. Patient dismissed advice with a flippant remark.",
+                "fee": 135.0
+            },
+            {
+                "name": "Chocolate Supply Transport",
+                "id": "200201",
+                "patient_name": "Han Solo",
+                "patient_id": "100009001",
+                "provider_name": "Chewbacca",
+                "provider_id": "900004002",
+                "dos": "12-15-2024",
+                "dor": "12-16-2024 10:00:00",
+                "comments": "aaaAAAOAOAAAA.",
+                "fee": 145.0
+            }
+        ]
+    },
+    {
+        "type": "Member",
+        "name": "R2-D2",
+        "id": "100009005",
+        "address": "Astromech Garage",
+        "city": "Mos Eisley",
+        "state": "TA",
+        "zip": "98765",
+        "history": [
+            {
+                "name": "Etiquette Workshop",
+                "id": "100105",
+                "patient_name": "R2-D2",
+                "patient_id": "100009005",
+                "provider_name": "C-3PO",
+                "provider_id": "900004001",
+                "dos": "12-11-2024",
+                "dor": "12-12-2024 12:30:00",
+                "comments": "Attempted to teach proper cocoa-serving etiquette. Patient’s beeps suggested indifference to the lesson.",
+                "fee": 120.0
+            }
+        ]
+    }
+]
