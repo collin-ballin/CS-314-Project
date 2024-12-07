@@ -168,6 +168,40 @@ def create_service(service_code, service_name, fee):
             cur.close()
         if conn:
             conn.close()
+def create_consultation(provider_id, member_id, consultation_date, comments):
+    try:
+        # Connect to the SQLite database
+        conn = psycopg2.connect(
+                dbname="choco",
+                user="dev",
+                password="guest",
+                host="localhost",
+                port="5432"
+                )
+        cur = conn.cursor()
+
+        # Insert a new record into consultation_records
+        cur.execute("""
+            INSERT INTO consultation_records (provider_id, member_id, consultation_date, comments)
+            VALUES (?, ?, ?, ?);
+        """, (provider_id, member_id, consultation_date, comments))
+
+        # Commit the transaction
+        conn.commit()
+
+        print("Consultation record added successfully!")
+        return True  # Return True to indicate success
+
+    except psycopg2.Error as e:
+        print(f"Error adding consultation record: {e}")
+        return False  # Return False in case of an error
+
+    finally:
+        # Ensure the connection is closed
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
 
 def create_service_record(provider_id, member_id, service_code, service_date, comments=None):
     try:
@@ -260,7 +294,7 @@ def create_eft_report( provider_id, amount, transfer_date):
             conn.close()
 
 # Retrieve / Printing Functions
-def printmembers():
+def retrieve_members():
     try:
         # Connect to the database
         conn = psycopg2.connect(
@@ -362,6 +396,124 @@ def retrieve_provider(provider_id=None, name=None):
         return None
 
     finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
+def retrieve_manager_report(weekstart_date, weekend_date):
+    try:
+        # Connect to the SQLite database
+        conn = psycopg2.connect(
+                dbname="choco",
+                user="dev",
+                password="guest",
+                host="localhost",
+                port="5432"
+                )# Replace with your actual database path
+        cur = conn.cursor()
+
+        # Query to list every provider to be paid between the custom weekstart and weekend dates
+        cur.execute('''
+            SELECT 
+                providers.provider_id, 
+                providers.name AS provider_name,
+                COUNT(service_records.record_id) AS num_consultations, 
+                SUM(services.fee) AS total_fee
+            FROM 
+                service_records
+            JOIN 
+                providers ON service_records.provider_id = providers.provider_id
+            JOIN 
+                services ON service_records.service_code = services.service_code
+            WHERE 
+                service_records.service_date BETWEEN ? AND ?
+            GROUP BY 
+                providers.provider_id;
+        ''', (weekstart_date, weekend_date))
+
+        # Fetch and display the results for each provider
+        provider_rows = cur.fetchall()
+        print(f"Provider Report for week {weekstart_date} - {weekend_date}:")
+        print("Provider ID | Provider Name | Consultations | Total Fee")
+        print("-" * 60)
+        for row in provider_rows:
+            print(f"{row[0]:<12} | {row[1]:<15} | {row[2]:<15} | ${row[3]:<10.2f}")
+
+        # Query to calculate total number of providers, consultations, and total fees
+        cur.execute('''
+            SELECT 
+                COUNT(DISTINCT provider_id) AS total_providers,
+                COUNT(record_id) AS total_consultations,
+                SUM(services.fee) AS total_fee
+            FROM 
+                service_records
+            JOIN 
+                services ON service_records.service_code = services.service_code
+            WHERE 
+                service_date BETWEEN ? AND ?;
+        ''', (weekstart_date, weekend_date))
+
+        # Fetch and display total summary
+        total_data = cur.fetchone()
+        print("\nTotal Report for the Week:")
+        print(f"Total Providers: {total_data[0]}")
+        print(f"Total Consultations: {total_data[1]}")
+        print(f"Total Fees: ${total_data[2]:.2f}")
+
+    except psycopg2.Error as e:
+        print(f"Error retrieving manager reports: {e}")
+
+    finally:
+        # Ensure the connection is closed
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
+def display_consultations():
+    try:
+        # Connect to the SQLite database
+        conn = psycopg2.connect(
+                dbname="choco",
+                user="dev",
+                password="guest",
+                host="localhost",
+                port="5432"
+                )
+        cur = conn.cursor()
+
+        # Query to fetch records, joining with 'providers' and 'members' tables, and sorting by consultation_date
+        cur.execute('''
+            SELECT 
+                consultation_records.consultation_id, 
+                consultation_records.consultation_date, 
+                providers.name AS provider_name, 
+                members.name AS member_name, 
+                consultation_records.comments
+            FROM consultation_records
+            JOIN providers ON consultation_records.provider_id = providers.provider_id
+            JOIN members ON consultation_records.member_id = members.member_id
+            ORDER BY consultation_records.consultation_date
+        ''')
+
+        # Fetch all rows
+        rows = cur.fetchall()
+
+        # Check if there are any records
+        if rows:
+            print("Consultation Records Sorted by Date:")
+            print("ID | Provider Name | Member Name | Consultation Date | Reason")
+            print("-" * 75)
+            for row in rows:
+                # Print each consultation record
+                print(f"{row[0]:<3} | {row[2]:<15} | {row[3]:<12} | {row[1]} | {row[4]}")
+        else:
+            print("No consultation records found.")
+
+    except psycopg2.Error as e:
+        print(f"Error retrieving consultation records: {e}")
+
+    finally:
+        # Ensure the connection is closed
         if cur:
             cur.close()
         if conn:
@@ -548,6 +700,38 @@ def retrieve_provider_report(provider_id=None, week_start_date=None, week_end_da
             conn.close()
 
 from datetime import date
+def retrieve_member(member_id=None, name=None):
+    try:
+        conn = psycopg2.connect(
+                dbname="choco",
+                user="dev",
+                password="guest",
+                host="localhost",
+                port="5432"
+                )  
+        cur = conn.cursor()
+
+        if member_id:
+            cur.execute("SELECT * FROM members WHERE member_id = ?", (member_id,))
+        elif name:
+            cur.execute("SELECT * FROM members WHERE name LIKE ?", ('%' + name + '%',))
+        else:
+            cur.execute("SELECT * FROM members")
+
+        rows = cur.fetchall()
+        for row in rows:
+            print(f"Member: {row}")
+        return rows
+    
+    except psycopg2.Error as e:
+        print(f"Error retrieving member(s): {e}")
+        return None
+    
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
 def retrieve_member_report(week_start_date, week_end_date):
     try:
         # Connect to the database
@@ -696,7 +880,42 @@ def retrieve_eft_records(transaction_id=None, provider_id=None, transfer_date=No
             cur.close()
         if conn:
             conn.close()
+def retrieve_service_codes():
+    try:
+        # Connect to the SQLite database
+        conn = psycopg2.connect(
+            dbname="choco",
+            user="dev",
+            password="guest",
+            host="localhost",
+            port="5432"
+        )# Replace with your actual database path
+        cur = conn.cursor()
 
+        # Query to fetch all service codes, names, and fees
+        cur.execute("SELECT service_code, service_name, fee FROM services")
+
+        # Fetch all the service details
+        services = cur.fetchall()
+
+        # Check if any services exist
+        if services:
+            print("\n\t\t=== Service Codes ===")
+            for service in services:
+                service_code, service_name, fee = service
+                print(f"Service Code: {service_code} | Name: {service_name} | Fee: ${fee:.2f}")
+        else:
+            print("No services found.")
+
+    except sqlite3.Error as e:
+        print(f"Error retrieving service details: {e}")
+    
+    finally:
+        # Ensure the connection is closed
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
 # Removal Functions
 def delete_member(member_id):
    try:
@@ -825,6 +1044,39 @@ def delete_service_record(record_id):
            cur.close()
        if conn:
            conn.close()
+def clear_consultation_table():
+    try:
+        # Connect to the SQLite database
+        conn = psycopg2.connect(
+            dbname="choco",
+            user="dev",
+            password="guest",
+            host="localhost",
+            port="5432"
+        )
+        cur = conn.cursor()
+
+        # Delete all records from the consultation_records table
+        cur.execute("DELETE FROM consultation_records")
+
+        # Reset the auto-increment counter for consultation_id
+        cur.execute("DELETE FROM sqlite_sequence WHERE name='consultation_records'")
+
+        # Commit the transaction
+        conn.commit()
+
+        print("All consultation records have been cleared and the ID counter has been reset.")
+
+    except psycopg2.Error as e:
+        print(f"Error clearing consultation records and resetting ID: {e}")
+
+    finally:
+        # Ensure the connection is closed
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
+
 def delete_eft_record(transaction_id):
     try:
         # Establish database connection
@@ -1226,6 +1478,39 @@ def verify_member(member_id):
         print(f"Error retrieving member details: {e}")
         return False  # Return False in case of an error
     
+    finally:
+        # Ensure the connection is closed
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
+
+def verify_service(service_id):
+    try:
+        # Connect to the SQLite database
+        conn = sqlite3.connect("choco.db")  # Replace with your actual database path
+        cur = conn.cursor()
+
+        # Query to check if the service_id exists and retrieve the name and fee
+        cur.execute("SELECT service_name, fee FROM services WHERE service_code = ?", (service_id,))
+
+        # Fetch the service details
+        service = cur.fetchone()  # Fetch a single row
+
+        # Check if the service exists
+        if service:
+            service_name, fee = service  # Unpack the result
+            print(f"Service Found: Name: {service_name}, Fee: ${fee:.2f}")
+        else:
+            print("No Service Exists with the provided service code.")  # Print if no service is found
+            return False  # Return False if no matching service_code is found
+
+        return True  # Return True if the service exists
+
+    except sqlite3.Error as e:
+        print(f"Error retrieving service details: {e}")
+        return False  # Return False in case of an error
+
     finally:
         # Ensure the connection is closed
         if cur:
