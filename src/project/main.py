@@ -41,7 +41,7 @@ def main() -> int:
     #   1.  MAIN PROGRAM LOOPS ...
     try:
         my_app = app.App()
-        my_app.main()
+        status = my_app.run()
     #
     #
     #   2.  EXCEPTION-CATCHING BLOCKS ...
@@ -50,7 +50,7 @@ def main() -> int:
         UTL.log(f"{e}",color=False)
         
     except Exception as e:
-        UTL.log("FALLBACK EXCEPTION CASE.  An specified exception has been thrown.",type=ANSI.ERROR)
+        UTL.log("FALLBACK EXCEPTION CASE.  An unspecified exception has been thrown.",type=ANSI.ERROR)
         UTL.log(f"{e}",color=False)
         
         traceback.print_exc()
