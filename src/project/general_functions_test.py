@@ -50,7 +50,7 @@ class test_member_functions(unittest.TestCase):
     def test_add_member_long_name(self):
         long_name = "A" * 100
         member = add_member(long_name, 987654321, "123 Main St", "Longtown", "OR", "97201")
-        self.assertEqual(member.name, long_name[:_M_SIZE_CONSTANTS["name"]])
+        self.assertEqual(member.name, long_name[:25])
 
     def test_add_member_no_zip_code(self):
         member = add_member("Ivy", 987654321, "123 Main St", "New York", "OR", "")
